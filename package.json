@@ -1,0 +1,31 @@
+{
+  "name": "bot-dryscord",
+  "description": "",
+  "version": "0.0.1",
+  "main": "build/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/server.ts",
+    "build": "npx tsc",
+    "prestart": "npm run build",
+    "start": "node build/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dudys37/Bot-Dryscord.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dudys37/Bot-Dryscord/issues"
+  },
+  "homepage": "https://github.com/Dudys37/Bot-Dryscord#readme",
+  "devDependencies": {
+    "tsx": "^4.11.2",
+    "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "dotenv": "^16.4.5"
+  }
+}
