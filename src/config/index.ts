@@ -1,0 +1,11 @@
+/**
+ * Arquivo para carregamento das Variáveis de Ambiente registradas no arquivo `.env`
+ */
+
+import dotenv from "dotenv";
+
+dotenv.config();
+
+export const STAGE = process.env.STAGE ?? "development";
+
+export const DISCORD_ACCESS_TOKEN = process.env.DISCORD_ACCESS_TOKEN ?? "invalid_token";
