@@ -1,0 +1,39 @@
+# The .dockerignore file excludes files from the container build process.
+#
+# https://docs.docker.com/engine/reference/builder/#dockerignore-file
+
+# Exclude locally vendored dependencies.
+vendor/
+
+# Exclude "build-time" ignore files.
+.*ignore
+
+# Exclude git history and configuration.
+.git
+.gitignore
+
+# VSCode
+.vscode
+
+# Environment
+.env
+
+# Docker
+docker-compose*.yml
+# Dockerfile*
+
+# Tests
+**/*_test.go
+
+# Make files
+Makefile
+
+# Markdown
+*.md
+
+# Deploy artifacts
+docker/
+k8s/
+
+# Temporary files
+tmp/
