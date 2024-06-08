@@ -82,9 +82,9 @@ npm run start
 
 ## Dependências
 Principais dependências do projeto em produção
-- dotenv
-- discord.js
+- [dotenv](https://www.npmjs.com/package/dotenv)
+- [discord.js](https://www.npmjs.com/package/discord.js)
 
 Demais dependências para desenvolvimento
-- tsx
-- typescript
+- [tsx](https://www.npmjs.com/package/tsx)
+- [typescript](https://www.npmjs.com/package/typescript)
