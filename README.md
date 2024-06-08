@@ -3,7 +3,7 @@
 ## Estrutura do Projeto
 Projeto baseado em NodeJS para criação de um Bot para Discord. Conforme a necessidade podem ser acrescentadas novas pastas e arquivos de configuração.
 
-```js
+```
 // resumo básico da estrutura do projeto
     // pasta `src` para centralização do projeto
 ├── src
@@ -53,8 +53,8 @@ Projeto baseado em NodeJS para criação de um Bot para Discord. Conforme a nece
 ## Environment
 Variáveis de Ambiente do projeto, ex.: [.env.example](.env.example)
 
-```sh
-STAGE=development
+```
+STAGE=<development | staging | production>
 DISCORD_ACCESS_TOKEN=<discord_token>
 ```
 
