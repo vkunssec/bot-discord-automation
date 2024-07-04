@@ -10,7 +10,7 @@ import {
 
 import { InteractionHandler } from "./controller/Interaction";
 import { DeployCommandsProps } from "./core/model/commandsProps";
-import { DISCORD_ACCESS_TOKEN } from "./config";
+import { DISCORD_ACCESS_TOKEN, CLIENT_ID } from "./config";
 
 /**
  * Classe DryscordApplication
@@ -61,7 +61,7 @@ export class DryscordApplication {
     registerSlashCommands({ guildId }: DeployCommandsProps) {
         const commands = this.interactionHandler.getSlashCommands();
         this.discordRestClient
-            .put(Routes.applicationGuildCommands(DISCORD_ACCESS_TOKEN, guildId), {
+            .put(Routes.applicationGuildCommands(CLIENT_ID, guildId), {
                 body: commands,
             })
             .then((data: any) => {
@@ -82,7 +82,7 @@ export class DryscordApplication {
      * - Receber os eventos de input
      */
     addClientEventHandlers() {
-        // Registro dos comandos
+        // Registro dos comandos ao entrar em um servidor
         this.client.on(Events.GuildCreate, async (guild) => {
             this.registerSlashCommands({ guildId: guild.id });
         });
@@ -99,7 +99,13 @@ export class DryscordApplication {
             console.log("Dryscord Bot is Ready! 🤖");
 
             // https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types
-            this.client.user?.setPresence({ activities: [{ type: ActivityType.Custom, name: `（づ￣3￣）づ╭❤️～ APULULULU`}]})
+            this.client.user?.setPresence({ activities: [{ type: ActivityType.Custom, name: `socorram me subi no ônibus em marrocos`}]});
+
+            // Registrar comandos para todos os servidores onde o bot já está presente
+            this.client.guilds.cache.forEach((guild) => {
+                console.log(`Registering commands for guild: ${guild.id}`);
+                this.registerSlashCommands({ guildId: guild.id });
+            });
         });
 
         // Handler de erros

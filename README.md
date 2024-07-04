@@ -56,6 +56,7 @@ Variáveis de Ambiente do projeto, ex.: [.env.example](.env.example)
 ```
 STAGE=<development | staging | production>
 DISCORD_ACCESS_TOKEN=<discord_token>
+CLIENT_ID=<application_id>
 ```
 
 ## Inicialização
