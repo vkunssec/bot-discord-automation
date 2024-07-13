@@ -1,20 +1,20 @@
 import {
+    ActivityType,
     ChatInputCommandInteraction,
     Client,
+    REST as DiscordRestClient,
     Events,
     GatewayIntentBits,
-    REST as DiscordRestClient,
     Routes,
-    ActivityType,
 } from "discord.js";
 
+import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "./config";
 import { InteractionHandler } from "./controller/Interaction";
 import { DeployCommandsProps } from "./core/model/commandsProps";
-import { DISCORD_ACCESS_TOKEN, CLIENT_ID } from "./config";
 
 /**
  * Classe DryscordApplication
- * 
+ *
  * Documentação oficial do Discord.js - https://discord.js.org/docs/packages/discord.js/14.15.3
  */
 export class DryscordApplication {
@@ -24,17 +24,11 @@ export class DryscordApplication {
 
     constructor() {
         this.client = new Client({
-            intents: [
-                GatewayIntentBits.Guilds,
-                GatewayIntentBits.GuildMessages,
-                GatewayIntentBits.MessageContent,
-            ],
+            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
             shards: "auto",
             failIfNotExists: false,
         });
-        this.discordRestClient = new DiscordRestClient().setToken(
-            DISCORD_ACCESS_TOKEN
-        );
+        this.discordRestClient = new DiscordRestClient().setToken(DISCORD_ACCESS_TOKEN);
         this.interactionHandler = new InteractionHandler();
     }
 
@@ -46,8 +40,8 @@ export class DryscordApplication {
         this.client
             .login(DISCORD_ACCESS_TOKEN)
             .then(() => {
-                // Em caso de sucesso no login a partir do Token de acesso, 
-                // inicia os Event Listeners 
+                // Em caso de sucesso no login a partir do Token de acesso,
+                // inicia os Event Listeners
                 this.addClientEventHandlers();
             })
             .catch((err) => console.error("Error starting bot", err));
@@ -55,7 +49,7 @@ export class DryscordApplication {
 
     /**
      * Método de Deploy dos comandos no Discord
-     * 
+     *
      * @param guildId Identificador do Comando no chat do Discord
      */
     registerSlashCommands({ guildId }: DeployCommandsProps) {
@@ -65,9 +59,7 @@ export class DryscordApplication {
                 body: commands,
             })
             .then((data: any) => {
-                console.log(
-                    `Successfully registered ${data.length} global application (/) commands`
-                );
+                console.log(`Successfully registered ${data.length} global application (/) commands`);
             })
             .catch((err) => {
                 console.error("Error registering application (/) commands", err);
@@ -89,9 +81,7 @@ export class DryscordApplication {
 
         // Receber os eventos de input
         this.client.on(Events.InteractionCreate, (interaction) => {
-            this.interactionHandler.handleInteraction(
-                interaction as ChatInputCommandInteraction
-            );
+            this.interactionHandler.handleInteraction(interaction as ChatInputCommandInteraction);
         });
 
         // Levantar o serviço do bot
@@ -99,7 +89,14 @@ export class DryscordApplication {
             console.log("Dryscord Bot is Ready! 🤖");
 
             // https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types
-            this.client.user?.setPresence({ activities: [{ type: ActivityType.Custom, name: `socorram me subi no ônibus em marrocos`}]});
+            this.client.user?.setPresence({
+                activities: [
+                    {
+                        type: ActivityType.Custom,
+                        name: `socorram me subi no ônibus em marrocos`,
+                    },
+                ],
+            });
 
             // Registrar comandos para todos os servidores onde o bot já está presente
             this.client.guilds.cache.forEach((guild) => {

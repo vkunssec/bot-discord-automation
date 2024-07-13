@@ -1,4 +1,4 @@
-import { SlashCommandBuilder, ChatInputCommandInteraction, CacheType } from "discord.js";
+import { CacheType, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
 import { Command } from "./command";
 
@@ -9,14 +9,12 @@ import { Command } from "./command";
 export class PingCommand implements Command {
     name = "ping";
     description = "Retries with Pongo!";
-    slashCommandConfig = new SlashCommandBuilder()
-        .setName(this.name)
-        .setDescription(this.description);
+    slashCommandConfig = new SlashCommandBuilder().setName(this.name).setDescription(this.description);
 
     /**
      * Resposta de Retorno do Comando
      * Pode ser customizado, desde envios simples de texto, a imagens, arquivos e estruturas interativas
-     * 
+     *
      * Alguns link de referência
      * - https://discord.js.org/docs/packages/discord.js/14.15.3/ChatInputCommandInteraction:Class#reply
      * - https://discord.js.org/docs/packages/discord.js/14.15.3/InteractionReplyOptions:Interface

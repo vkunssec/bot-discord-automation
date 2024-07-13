@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, TextBasedChannelFields } from "discord.js";
 
 /**
  * Interface de criação de um comando qualquer para o servidor do Discord
@@ -11,6 +11,6 @@ export interface Command {
     // Construtor do comando
     slashCommandConfig: SlashCommandBuilder;
 
-    // Controlador da Execução do comando 
-    execute(interaction: ChatInputCommandInteraction): Promise<void>;
+    // Controlador da Execução do comando
+    execute(interaction: ChatInputCommandInteraction | TextBasedChannelFields): Promise<void>;
 }

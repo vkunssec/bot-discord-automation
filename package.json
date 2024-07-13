@@ -8,7 +8,9 @@
     "dev": "tsx watch src/server.ts",
     "build": "npx tsc",
     "prestart": "npm run build",
-    "start": "node build/server.js"
+    "start": "node build/server.js",
+    "prettier": "npx prettier . !**/**.{json,yml,md} --write",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -21,6 +23,9 @@
   },
   "homepage": "https://github.com/Dudys37/Bot-Dryscord#readme",
   "devDependencies": {
+    "husky": "^9.0.11",
+    "prettier": "3.3.3",
+    "prettier-plugin-organize-imports": "^4.0.0",
     "tsx": "^4.11.2",
     "typescript": "^5.4.5"
   },
