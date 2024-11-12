@@ -34,7 +34,6 @@ export class RemoveMessagesCommand implements Command {
                 .setRequired(false)
         ) as SlashCommandBuilder;
 
-
     /**
      * Execução do Comando
      */
