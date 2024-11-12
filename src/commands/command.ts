@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, TextBasedChannelFields } from "discord.js";
+import { AutocompleteInteraction, CacheType, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
 /**
  * Interface de criação de um comando qualquer para o servidor do Discord
@@ -11,6 +11,9 @@ export interface Command {
     // Construtor do comando
     slashCommandConfig: SlashCommandBuilder;
 
+    // Autocompletar campo
+    autoComplete?(interaction: AutocompleteInteraction<CacheType>): Promise<any>;
+
     // Controlador da Execução do comando
-    execute(interaction: ChatInputCommandInteraction | TextBasedChannelFields): Promise<void>;
+    execute(interaction: ChatInputCommandInteraction): Promise<void>;
 }
