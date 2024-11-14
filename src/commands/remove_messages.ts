@@ -1,13 +1,13 @@
 import {
     ChatInputCommandInteraction,
-    Collection,
     EmbedBuilder,
     GuildMember,
-    Message,
+    InteractionResponse,
     SlashCommandBuilder,
     TextChannel,
 } from "discord.js";
 
+import { Logs } from "../controller/Logs";
 import { Command } from "./command";
 
 /**
@@ -37,7 +37,7 @@ export class RemoveMessagesCommand implements Command {
     /**
      * Execução do Comando
      */
-    async execute(interaction: ChatInputCommandInteraction): Promise<any> {
+    async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean>> {
         const { member, options, channel } = interaction;
 
         // Verificar se o usuário tem permissão para deletar mensagens
@@ -90,7 +90,7 @@ export class RemoveMessagesCommand implements Command {
         if (channel instanceof TextChannel) {
             try {
                 await channel.bulkDelete(filteredMessages);
-                await writeLogs(interaction, filteredMessages, channel);
+                Logs.DeletedMessages(interaction, filteredMessages, channel);
 
                 const embed = new EmbedBuilder()
                     .setColor("#00ff00")
@@ -118,37 +118,5 @@ export class RemoveMessagesCommand implements Command {
             content: "❌ Não é possível deletar mensagens neste tipo de canal!",
             ephemeral: true,
         });
-    }
-}
-
-async function writeLogs(
-    interaction: ChatInputCommandInteraction,
-    filteredMessages: Collection<string, Message<boolean>>,
-    channel: TextChannel
-) {
-    try {
-        // Criar log antes de deletar
-        const logChannel = interaction.guild?.channels.cache.find((channel) => channel.name === "logs") as TextChannel;
-
-        // Mapear as mensagens deletadas
-        const deletedMessagesLog = filteredMessages.map((msg) => ({
-            autor: msg.author.tag,
-            conteudo: msg.content,
-            data: msg.createdAt,
-        }));
-
-        // Enviar o log
-        if (logChannel) {
-            await logChannel.send({
-                content: `**Log de Mensagens Deletadas**
-Deletado por: ${interaction.user.tag}
-Quantidade: ${filteredMessages.size}
-Canal: ${channel.name}
-Data: ${new Date().toLocaleString("pt-BR")}
-                \`\`\`json\n${JSON.stringify(deletedMessagesLog, null, 2)}\`\`\``,
-            });
-        }
-    } catch (error) {
-        console.error("Erro ao criar log de mensagens deletadas:", error);
     }
 }

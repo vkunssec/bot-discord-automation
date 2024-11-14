@@ -5,9 +5,11 @@ import {
     REST as DiscordRestClient,
     Events,
     GatewayIntentBits,
+    Guild,
     Routes,
 } from "discord.js";
 
+import { RegisterCommands } from "./commands/register_commands";
 import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "./config";
 import { InteractionHandler } from "./controller/Interaction";
 import { DeployCommandsProps } from "./core/model/commandsProps";
@@ -36,7 +38,7 @@ export class DryscordApplication {
      * Método de inicio do serviço
      * Necessário TOKEN de acesso para validação
      */
-    start() {
+    public start() {
         this.client
             .login(DISCORD_ACCESS_TOKEN)
             .then(() => {
@@ -52,7 +54,7 @@ export class DryscordApplication {
      *
      * @param guildId Identificador do Comando no chat do Discord
      */
-    registerSlashCommands({ guildId }: DeployCommandsProps) {
+    public registerSlashCommands({ guildId }: DeployCommandsProps) {
         const commands = this.interactionHandler.getSlashCommands();
         this.discordRestClient
             .put(Routes.applicationGuildCommands(CLIENT_ID, guildId), {
@@ -73,15 +75,29 @@ export class DryscordApplication {
      * - Handler de erros
      * - Receber os eventos de input
      */
-    addClientEventHandlers() {
+    public addClientEventHandlers() {
         // Registro dos comandos ao entrar em um servidor
-        this.client.on(Events.GuildCreate, async (guild) => {
+        this.client.on(Events.GuildCreate, async (guild: Guild) => {
             this.registerSlashCommands({ guildId: guild.id });
         });
 
         // Receber os eventos de input
         this.client.on(Events.InteractionCreate, (interaction) => {
             this.interactionHandler.handleInteraction(interaction as ChatInputCommandInteraction);
+        });
+
+        // Comando por prefixo, para atualizar os comandos no servidor
+        this.client.on(Events.MessageCreate, async (message) => {
+            if (!message.content.startsWith("!")) return;
+
+            // Remover o prefixo "!"
+            const command = message.content.slice(1).toLowerCase();
+            const register = new RegisterCommands();
+
+            // Verificar se o comando existe
+            if (register.name === command || register.aliases.includes(command)) {
+                await register.execute(message);
+            }
         });
 
         // Levantar o serviço do bot
@@ -98,10 +114,10 @@ export class DryscordApplication {
                 ],
             });
 
+            // TODO: criar um comando para registrar os comandos no servidor
             // Registrar comandos para todos os servidores onde o bot já está presente
-            this.client.guilds.cache.forEach((guild) => {
-                console.log(`Registering commands for guild: ${guild.id}`);
-                this.registerSlashCommands({ guildId: guild.id });
+            this.client.guilds.cache.forEach((guild: Guild) => {
+                // this.registerSlashCommands({ guildId: guild.id });
             });
         });
 

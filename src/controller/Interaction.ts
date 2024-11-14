@@ -14,8 +14,8 @@ export class InteractionHandler {
         this.commands = [new PingCommand(), new RemoveMessagesCommand()];
     }
 
-    getSlashCommands() {
-        return this.commands.map((command: Command) => command.slashCommandConfig.toJSON());
+    public getSlashCommands() {
+        return this.commands.map((command: Command) => command.slashCommandConfig?.toJSON());
     }
 
     /**
@@ -31,7 +31,7 @@ export class InteractionHandler {
      * >>> }
      * ```
      */
-    async handleInteraction(interaction: ChatInputCommandInteraction): Promise<void> {
+    public async handleInteraction(interaction: ChatInputCommandInteraction): Promise<void> {
         const commandName = interaction.commandName;
 
         // Checa se o comando existe no registro de comandos
