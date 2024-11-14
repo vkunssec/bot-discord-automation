@@ -109,13 +109,14 @@ export class DryscordApplication {
                 activities: [
                     {
                         type: ActivityType.Custom,
-                        name: `socorram me subi no ônibus em marrocos`,
+                        name: "（づ￣3￣）づ╭❤️～",
                     },
                 ],
             });
 
-            // TODO: criar um comando para registrar os comandos no servidor
             // Registrar comandos para todos os servidores onde o bot já está presente
+            // essa funcionalidade está desativada para evitar sobrecarga no Servidor do Discord
+            // porque existe um limite atualização de comandos por dia
             this.client.guilds.cache.forEach((guild: Guild) => {
                 // this.registerSlashCommands({ guildId: guild.id });
             });

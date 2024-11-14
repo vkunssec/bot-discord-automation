@@ -3,10 +3,14 @@ version: "3"
 services:
     bot:
         build:
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev # Dockerfile para desenvolvimento
             context: .
         container_name: dyrscord-bot
         env_file:
             - .env
         environment:
             - STAGE="development"
+        volumes: # Adiciona volumes para desenvolvimento
+            - ./src:/app/src
+            - ./package.json:/app/package.json
+            - ./tsconfig.json:/app/tsconfig.json

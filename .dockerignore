@@ -37,3 +37,9 @@ k8s/
 
 # Temporary files
 tmp/
+
+# Node Modules
+node_modules/
+
+# Build
+build/
