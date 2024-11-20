@@ -1,5 +1,5 @@
-import { Command } from "./command";
+import { EmbeddingCommand } from "./embedding";
 import { PingCommand } from "./ping";
 import { RemoveMessagesCommand } from "./remove_messages";
 
-export { Command, PingCommand, RemoveMessagesCommand };
+export { EmbeddingCommand, PingCommand, RemoveMessagesCommand };

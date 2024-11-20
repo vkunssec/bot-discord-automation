@@ -1,6 +1,6 @@
 import { ApplicationCommandType, CacheType, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
 
-import { Command } from "./command";
+import { Command } from "../core/interface/command";
 
 /**
  * Criação básica de um Comando

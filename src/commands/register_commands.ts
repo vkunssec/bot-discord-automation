@@ -2,7 +2,7 @@ import { Message, REST, Routes, TextChannel } from "discord.js";
 import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "../config";
 import { InteractionHandler } from "../controller/Interaction";
 import { Logs } from "../controller/Logs";
-import { Command } from "./command";
+import { Command } from "../core/interface/command";
 
 export class RegisterCommands implements Command {
     name = "register";
@@ -33,6 +33,14 @@ export class RegisterCommands implements Command {
                 command: this.aliases,
                 description: this.description,
                 channel: context.channel as TextChannel,
+            });
+
+            console.log(`Successfully executed command [${this.name}]`, {
+                guild: {
+                    id: context.guildId,
+                    name: context.guild?.name,
+                },
+                user: { name: context.author.globalName },
             });
         } catch (error) {
             console.error("Erro ao registrar comandos:", error);

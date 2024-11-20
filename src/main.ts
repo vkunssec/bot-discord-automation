@@ -118,7 +118,7 @@ export class DryscordApplication {
             // essa funcionalidade está desativada para evitar sobrecarga no Servidor do Discord
             // porque existe um limite atualização de comandos por dia
             this.client.guilds.cache.forEach((guild: Guild) => {
-                // this.registerSlashCommands({ guildId: guild.id });
+                this.registerSlashCommands({ guildId: guild.id });
             });
         });
 

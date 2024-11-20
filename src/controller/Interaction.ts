@@ -1,5 +1,6 @@
 import { ChatInputCommandInteraction } from "discord.js";
-import { Command, PingCommand, RemoveMessagesCommand } from "../commands";
+import { EmbeddingCommand, PingCommand, RemoveMessagesCommand } from "../commands";
+import { Command } from "../core/interface/command";
 
 /**
  * Handler para controlar as Interações
@@ -11,7 +12,7 @@ export class InteractionHandler {
         /**
          * Todo novo Comando DEVE ser adicionado no construtor
          */
-        this.commands = [new PingCommand(), new RemoveMessagesCommand()];
+        this.commands = [new EmbeddingCommand(), new PingCommand(), new RemoveMessagesCommand()];
     }
 
     public getSlashCommands() {
