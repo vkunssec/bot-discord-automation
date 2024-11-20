@@ -10,7 +10,8 @@
     "prestart": "npm run build",
     "start": "node build/server.js",
     "prettier": "npx prettier . !**/**.{json,yml,md} --write",
-    "prepare": "husky"
+    "prepare": "husky",
+    "docs": "npx typedoc --tsconfig tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "prettier": "3.3.3",
     "prettier-plugin-organize-imports": "^4.0.0",
     "tsx": "^4.11.2",
+    "typedoc": "^0.26.11",
     "typescript": "^5.4.5"
   },
   "dependencies": {

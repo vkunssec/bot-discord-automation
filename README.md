@@ -1,5 +1,7 @@
 # Bot Dryscord
 
+![workflow](https://github.com/vkunssec/Bot-Dryscord/workflows/workflow/badge.svg)
+
 ## Estrutura do Projeto
 
 Projeto baseado em NodeJS para criação de um Bot para Discord. Conforme a necessidade podem ser acrescentadas novas pastas e arquivos de configuração.
@@ -25,6 +27,9 @@ Projeto baseado em NodeJS para criação de um Bot para Discord. Conforme a nece
     ├── core
         // pasta modelos de dados
         └── model
+
+        // pasta de interfaces
+        └── interface
 
         // arquivo para classe principal do projeto
         // Dryscord Application - controle das inicializações, event listeners, routes, etc
@@ -59,6 +64,7 @@ Variáveis de Ambiente do projeto, ex.: [.env.example](.env.example)
 STAGE=<development | staging | production>
 DISCORD_ACCESS_TOKEN=<discord_token>
 CLIENT_ID=<application_id>
+CHANNEL_LOGS=<channel_name | "logs">
 ```
 
 ## Inicialização
@@ -100,3 +106,7 @@ Demais dependências para desenvolvimento
 
 -   [tsx](https://www.npmjs.com/package/tsx)
 -   [typescript](https://www.npmjs.com/package/typescript)
+-   [prettier](https://www.npmjs.com/package/prettier)
+-   [prettier-plugin-organize-imports](https://www.npmjs.com/package/prettier-plugin-organize-imports)
+-   [husky](https://www.npmjs.com/package/husky)
+-   [typedoc](https://www.npmjs.com/package/typedoc)
