@@ -1,5 +1,12 @@
-import { ApplicationCommandType, CacheType, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import {
+    ApplicationCommandType,
+    CacheType,
+    ChatInputCommandInteraction,
+    SlashCommandBuilder,
+    TextChannel,
+} from "discord.js";
 
+import { Logs } from "../controller/Logs";
 import { Command } from "../core/interface/command";
 
 /**
@@ -21,6 +28,13 @@ export class PingCommand implements Command {
      * - https://discord.js.org/docs/packages/discord.js/14.15.3/InteractionReplyOptions:Interface
      */
     async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<any> {
+        Logs.GenericInfoLog({
+            interaction: interaction,
+            command: this.name,
+            description: this.description,
+            channel: interaction.channel as TextChannel,
+        });
+
         return interaction.reply(`Pong! (≧∇≦)ﾉ`);
     }
 }

@@ -64,7 +64,11 @@ Variáveis de Ambiente do projeto, ex.: [.env.example](.env.example)
 STAGE=<development | staging | production>
 DISCORD_ACCESS_TOKEN=<discord_token>
 CLIENT_ID=<application_id>
-CHANNEL_LOGS=<channel_name | "logs">
+
+CHANNEL_LOGS=<channel_name | "logs"> // canal de logs
+
+CHANNEL_WELCOME=<channel_welcome_id> // canal de boas-vindas
+ROLE_DEFAULT=<role_default_id> // cargo padrão para novos membros
 ```
 
 ## Inicialização
@@ -110,3 +114,5 @@ Demais dependências para desenvolvimento
 -   [prettier-plugin-organize-imports](https://www.npmjs.com/package/prettier-plugin-organize-imports)
 -   [husky](https://www.npmjs.com/package/husky)
 -   [typedoc](https://www.npmjs.com/package/typedoc)
+-   [eslint](https://www.npmjs.com/package/eslint)
+-   [eslint-config-prettier](https://www.npmjs.com/package/eslint-config-prettier)

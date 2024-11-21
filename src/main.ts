@@ -26,7 +26,12 @@ export class DryscordApplication {
 
     constructor() {
         this.client = new Client({
-            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+            intents: [
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildMembers,
+            ],
             shards: "auto",
             failIfNotExists: false,
         });
@@ -125,6 +130,11 @@ export class DryscordApplication {
         // Handler de erros
         this.client.on(Events.Error, (err: Error) => {
             console.error("Client error", err);
+        });
+
+        // Adicionar o novo evento de boas-vindas
+        this.client.on(Events.GuildMemberAdd, async (member) => {
+            this.interactionHandler.handleMemberAdd(member);
         });
     }
 }

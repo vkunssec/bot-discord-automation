@@ -21,6 +21,7 @@ export class Logs {
                 autor_tag: msg.author.tag,
                 autor_username: msg.author.username,
                 conteudo: msg.content.substring(0, 1000), // Limita o conteúdo a 1000 caracteres
+                embeds: msg.embeds,
                 data_da_mensagem: new Date(msg.createdAt).toLocaleString("pt-BR"),
                 data_de_exclusao: new Date().toLocaleString("pt-BR"),
                 deletado_por: interaction.user.tag,
@@ -60,7 +61,7 @@ export class Logs {
             if (!logChannel) return;
 
             const embed = new EmbedBuilder()
-                .setColor("#4169E1")
+                .setColor("Red")
                 .setTitle("🖥️ Comando executado")
                 .addFields([
                     { name: "Comando", value: Array.isArray(data.command) ? data.command.join(", ") : data.command },
