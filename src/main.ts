@@ -12,6 +12,7 @@ import {
 import { RegisterCommands } from "./commands/register_commands";
 import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "./config";
 import { InteractionHandler } from "./controller/Interaction";
+import { MongoDB } from "./core/database/mongodb";
 import { DeployCommandsProps } from "./core/model/commandsProps";
 
 /**
@@ -106,7 +107,7 @@ export class DryscordApplication {
         });
 
         // Levantar o serviço do bot
-        this.client.on(Events.ClientReady, () => {
+        this.client.on(Events.ClientReady, async () => {
             console.log("Dryscord Bot is Ready! 🤖");
 
             // https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types
@@ -118,6 +119,15 @@ export class DryscordApplication {
                     },
                 ],
             });
+
+            /**
+             * Conectar ao banco de dados MongoDB
+             * Necessário para que alguns comandos funcionem
+             * Abrindo a conexão quando a aplicação é levantada para
+             * Aproveitar uma mesma conexão em toda aplicação
+             * Diminuindo a quantidade de conexões ao banco de dados
+             */
+            await MongoDB.getInstance().connect();
 
             // Registrar comandos para todos os servidores onde o bot já está presente
             // essa funcionalidade está desativada para evitar sobrecarga no Servidor do Discord
