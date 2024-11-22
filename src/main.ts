@@ -20,11 +20,40 @@ import { DeployCommandsProps } from "./core/model/commandsProps";
  * Classe DryscordApplication
  *
  * Documentação oficial do Discord.js - https://discord.js.org/docs/packages/discord.js/14.15.3
+ *
+ * Documentação oficial do Node-Cron - https://www.npmjs.com/package/node-cron
+ *
+ * Documentação oficial do MongoDB - https://www.mongodb.com/docs/drivers/node/current/
+ *
+ * Documentação oficial do dotenv - https://www.npmjs.com/package/dotenv
+ *
+ * @param {Client} client - Cliente do Discord
+ * @param {DiscordRestClient} discordRestClient - Cliente REST do Discord
+ * @param {InteractionHandler} interactionHandler - Manipulador de interações
+ * @param {BirthdayAutomation} birthdayAutomation - Serviço de verificação de aniversários
+ *
+ * @version 1.0.0
+ * @since 2024-11-22
  */
 export class DryscordApplication {
+    /**
+     * Cliente do Discord
+     */
     private client: Client;
+
+    /**
+     * Cliente REST do Discord
+     */
     private discordRestClient: DiscordRestClient;
+
+    /**
+     * Manipulador de interações
+     */
     private interactionHandler: InteractionHandler;
+
+    /**
+     * Serviço de verificação de aniversários
+     */
     private birthdayAutomation: BirthdayAutomation;
 
     constructor() {
@@ -133,6 +162,7 @@ export class DryscordApplication {
             await MongoDB.getInstance().connect();
 
             // Iniciar o serviço de verificação de aniversários
+            // Executa todos os dias as 00:00
             this.birthdayAutomation.startBirthdayCheck();
 
             // Registrar comandos para todos os servidores onde o bot já está presente
