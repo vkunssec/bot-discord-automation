@@ -2,6 +2,13 @@ import { User } from "discord.js";
 import { MONGODB_COLLECTION_BIRTHDATE } from "../../../config";
 import { MongoDB } from "../mongodb";
 
+/**
+ * Registra a data de aniversário do usuário no banco de dados MongoDB
+ *
+ * @param user - Usuário do Discord
+ * @param day - Dia do aniversário
+ * @param month - Mês do aniversário
+ */
 export async function insertBirthdate(user: User, day: number, month: number): Promise<void> {
     try {
         // Instancia a classe MongoDB

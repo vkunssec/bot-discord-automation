@@ -9,6 +9,7 @@ import {
     Routes,
 } from "discord.js";
 
+import { BirthdayAutomation } from "./automation/get_birthdays";
 import { RegisterCommands } from "./commands/register_commands";
 import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "./config";
 import { InteractionHandler } from "./controller/Interaction";
@@ -24,6 +25,7 @@ export class DryscordApplication {
     private client: Client;
     private discordRestClient: DiscordRestClient;
     private interactionHandler: InteractionHandler;
+    private birthdayAutomation: BirthdayAutomation;
 
     constructor() {
         this.client = new Client({
@@ -38,6 +40,7 @@ export class DryscordApplication {
         });
         this.discordRestClient = new DiscordRestClient().setToken(DISCORD_ACCESS_TOKEN);
         this.interactionHandler = new InteractionHandler();
+        this.birthdayAutomation = new BirthdayAutomation(this.client);
     }
 
     /**
@@ -128,6 +131,9 @@ export class DryscordApplication {
              * Diminuindo a quantidade de conexões ao banco de dados
              */
             await MongoDB.getInstance().connect();
+
+            // Iniciar o serviço de verificação de aniversários
+            this.birthdayAutomation.startBirthdayCheck();
 
             // Registrar comandos para todos os servidores onde o bot já está presente
             // essa funcionalidade está desativada para evitar sobrecarga no Servidor do Discord
