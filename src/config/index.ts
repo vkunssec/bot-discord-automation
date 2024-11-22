@@ -17,3 +17,11 @@ export const CHANNEL_LOGS = process.env.CHANNEL_LOGS ?? "logs";
 export const CHANNEL_WELCOME = process.env.CHANNEL_WELCOME ?? "invalid_channel_welcome";
 
 export const ROLE_DEFAULT = process.env.ROLE_DEFAULT ?? "invalid_role_default";
+
+export const CHANNEL_BIRTHDAY = process.env.CHANNEL_BIRTHDAY ?? "invalid_channel_birthday";
+
+export const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/dryscord";
+
+export const MONGODB_DATABASE = process.env.MONGODB_DATABASE ?? "dryscord";
+
+export const MONGODB_COLLECTION_BIRTHDATE = process.env.MONGODB_COLLECTION_BIRTHDATE ?? "users_birthdate";
