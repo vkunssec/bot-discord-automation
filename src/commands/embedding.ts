@@ -9,7 +9,7 @@ import {
 import { Command } from "../core/interface/command";
 
 /**
- * Criação de um Incorporador de Mensagens
+ * Comando para criar um incorporador de mensagens personalizado
  */
 export class EmbeddingCommand implements Command {
     name = "embed";
@@ -50,6 +50,9 @@ export class EmbeddingCommand implements Command {
 
     /**
      * Execução do Comando
+     *
+     * @param interaction - Interação do usuário
+     * @returns - Retorno da interação
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean>> {
         const { member, options, channel } = interaction;
@@ -72,6 +75,7 @@ export class EmbeddingCommand implements Command {
         const color = options.getString("color") || "Blue";
         const fieldsJson = options.getString("fields_json");
 
+        // Formata a descrição
         const formattedDescription = description?.split("\\n").join("\n") || "";
 
         // Criação do Embed
@@ -116,7 +120,10 @@ export class EmbeddingCommand implements Command {
         // Configuração dos Campos JSON
         if (fieldsJson) {
             try {
+                // Converte o JSON para um array de campos
                 const fields = JSON.parse(fieldsJson);
+
+                // Adiciona os campos ao embed
                 if (Array.isArray(fields)) {
                     fields.forEach((field) => {
                         if (field.title && field.content) {
