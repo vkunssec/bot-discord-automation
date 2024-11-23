@@ -4,17 +4,24 @@ import { InteractionHandler } from "../controller/Interaction";
 import { Logs } from "../controller/Logs";
 import { Command } from "../core/interface/command";
 
+/**
+ * Comando para registrar os comandos do bot
+ */
 export class RegisterCommands implements Command {
     name = "register";
     description = "Comando para atualizar a lista de comandos registrados no Bot";
     aliases = ["register", "update"];
 
+    /**
+     * Execução do Comando
+     */
     async execute(context: Message): Promise<any> {
         // Verifica se o usuário tem permissão de administrador
         if (!context.member?.permissions.has("Administrator")) {
             return context.reply("Você não tem permissão para usar este comando!");
         }
 
+        // Obtém os comandos registrados
         const commands = new InteractionHandler().getSlashCommands();
 
         try {
@@ -26,8 +33,11 @@ export class RegisterCommands implements Command {
             });
 
             console.log(`Successfully registered ${data.length} global application (/) commands`);
+
+            // Responde ao usuário
             await context.reply("Comandos registrados com sucesso!");
 
+            // Registra o log
             Logs.GenericInfoLog({
                 interaction: context,
                 command: this.aliases,

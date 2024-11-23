@@ -132,3 +132,6 @@ build/
 
 # personal vscode
 .vscode/
+
+# docs folder 
+docs/

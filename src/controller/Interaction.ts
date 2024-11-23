@@ -1,5 +1,7 @@
-import { ChatInputCommandInteraction } from "discord.js";
-import { EmbeddingCommand, PingCommand, RemoveMessagesCommand } from "../commands";
+import { ChatInputCommandInteraction, GuildMember } from "discord.js";
+import { welcomeMessage } from "../automation/welcome_message";
+import { EmbeddingCommand, PingCommand, RemoveMessagesCommand, UserStatsCommand } from "../commands";
+import { RegisterBirthdateCommand } from "../commands/register_birthdate";
 import { Command } from "../core/interface/command";
 
 /**
@@ -12,7 +14,13 @@ export class InteractionHandler {
         /**
          * Todo novo Comando DEVE ser adicionado no construtor
          */
-        this.commands = [new EmbeddingCommand(), new PingCommand(), new RemoveMessagesCommand()];
+        this.commands = [
+            new EmbeddingCommand(),
+            new PingCommand(),
+            new RemoveMessagesCommand(),
+            new RegisterBirthdateCommand(),
+            new UserStatsCommand(),
+        ];
     }
 
     public getSlashCommands() {
@@ -61,5 +69,14 @@ export class InteractionHandler {
                     user: { name: interaction.user.globalName },
                 })
             );
+    }
+
+    /**
+     * Evento de boas-vindas
+     *
+     * @param member - Membro que foi adicionado ao servidor
+     */
+    public async handleMemberAdd(member: GuildMember) {
+        await welcomeMessage(member);
     }
 }

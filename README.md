@@ -10,6 +10,9 @@ Projeto baseado em NodeJS para criação de um Bot para Discord. Conforme a nece
 // resumo básico da estrutura do projeto
     // pasta `src` para centralização do projeto
 ├── src
+        // pasta das funcionalidades automáticas
+    ├── automation
+
         // pasta dos comandos para o bot
     ├── commands
 
@@ -61,10 +64,26 @@ Projeto baseado em NodeJS para criação de um Bot para Discord. Conforme a nece
 Variáveis de Ambiente do projeto, ex.: [.env.example](.env.example)
 
 ```
+# Ambiente
 STAGE=<development | staging | production>
+
+# Discord
 DISCORD_ACCESS_TOKEN=<discord_token>
 CLIENT_ID=<application_id>
-CHANNEL_LOGS=<channel_name | "logs">
+
+# Canais
+CHANNEL_LOGS=<channel_logs_name>
+CHANNEL_WELCOME=<channel_welcome_id>
+CHANNEL_BIRTHDAY=<channel_birthday_id>
+
+# Cargos
+ROLE_DEFAULT=<role_default_id>
+
+# MongoDB
+MONGODB_URI=<mongodb_uri>
+MONGODB_DATABASE=<mongodb_database>
+MONGODB_COLLECTION_BIRTHDATE=<collection_birthdate>
+MONGODB_COLLECTION_USER_INTERACTIONS=<collection_user_interactions>
 ```
 
 ## Inicialização
@@ -101,6 +120,8 @@ Principais dependências do projeto em produção
 
 -   [dotenv](https://www.npmjs.com/package/dotenv)
 -   [discord.js](https://www.npmjs.com/package/discord.js)
+-   [mongodb](https://www.npmjs.com/package/mongodb)
+-   [node-cron](https://www.npmjs.com/package/node-cron)
 
 Demais dependências para desenvolvimento
 
@@ -110,3 +131,5 @@ Demais dependências para desenvolvimento
 -   [prettier-plugin-organize-imports](https://www.npmjs.com/package/prettier-plugin-organize-imports)
 -   [husky](https://www.npmjs.com/package/husky)
 -   [typedoc](https://www.npmjs.com/package/typedoc)
+-   [eslint](https://www.npmjs.com/package/eslint)
+-   [eslint-config-prettier](https://www.npmjs.com/package/eslint-config-prettier)
