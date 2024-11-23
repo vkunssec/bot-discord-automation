@@ -5,19 +5,26 @@ import { UserInteraction } from "../core/interface/user_interaction";
 
 /**
  * Classe para rastrear as interações do usuário
+ *
+ * @param client - Client do Discord
  */
 export class UserInteractionTracker {
     private static instance: UserInteractionTracker;
     private collection = MONGODB_COLLECTION_USER_INTERACTIONS;
+    private client: Client;
+
+    constructor(client: Client) {
+        this.client = client;
+    }
 
     /**
      * Retorna a instância da classe
      *
      * @returns - Instância da classe
      */
-    public static getInstance(): UserInteractionTracker {
+    public static getInstance(client: Client): UserInteractionTracker {
         if (!UserInteractionTracker.instance) {
-            UserInteractionTracker.instance = new UserInteractionTracker();
+            UserInteractionTracker.instance = new UserInteractionTracker(client);
         }
         return UserInteractionTracker.instance;
     }
@@ -27,13 +34,13 @@ export class UserInteractionTracker {
      *
      * @param client - Cliente do Discord
      */
-    public setupTracking(client: Client): void {
-        client.on("messageCreate", async (message: Message) => {
+    public setupTracking(): void {
+        this.client.on("messageCreate", async (message: Message) => {
             if (message.author.bot || !message.guild) return;
             await this.trackMessage(message.author.id, message.guild.id);
         });
 
-        client.on(
+        this.client.on(
             "messageReactionAdd",
             async (reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser) => {
                 try {
@@ -55,7 +62,7 @@ export class UserInteractionTracker {
             }
         );
 
-        client.on("voiceStateUpdate", async (oldState: VoiceState, newState: VoiceState) => {
+        this.client.on("voiceStateUpdate", async (oldState: VoiceState, newState: VoiceState) => {
             // Usuário entrou em um canal de voz
             if (!oldState.channelId && newState.channelId) {
                 await this.handleVoiceJoin(newState.member!.id, newState.guild.id);
@@ -152,6 +159,7 @@ export class UserInteractionTracker {
                 $set: {
                     lastVoiceJoin: new Date(),
                     isInVoice: true,
+                    lastInteraction: new Date(),
                 },
                 $setOnInsert: { totalTimeInVoice: 0 },
             },
@@ -182,6 +190,7 @@ export class UserInteractionTracker {
                     $set: {
                         lastVoiceJoin: null,
                         isInVoice: false,
+                        lastInteraction: new Date(),
                     },
                 }
             );

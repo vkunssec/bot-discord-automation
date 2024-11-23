@@ -29,7 +29,7 @@ export class UserStatsCommand implements Command {
         const guildId = interaction.guildId!;
 
         // Obter as estatísticas de interação do usuário
-        const tracker = UserInteractionTracker.getInstance();
+        const tracker = UserInteractionTracker.getInstance(interaction.client);
         const stats = await tracker.getUserStats(targetUser.id, guildId);
 
         // Obter o usuário do servidor
@@ -44,9 +44,9 @@ export class UserStatsCommand implements Command {
         await interaction.reply({
             content:
                 `Estatísticas de ${user}:\n\n` +
-                `**Mensagens enviadas:** ${stats.messageCount}\n` +
-                `**Reações adicionadas:** ${stats.reactionCount}\n` +
-                `**Tempo em voz:** ${tracker.formatVoiceTime(stats.totalTimeInVoice)}\n\n` +
+                `**Mensagens enviadas:** ${stats.messageCount || 0}\n` +
+                `**Reações adicionadas:** ${stats.reactionCount || 0}\n` +
+                `**Tempo em voz:** ${tracker.formatVoiceTime(stats.totalTimeInVoice || 0)}\n\n` +
                 `Última interação: ${stats.lastInteraction.toLocaleString()}`,
         });
     }

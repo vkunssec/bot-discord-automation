@@ -10,8 +10,6 @@ import {
     Routes,
 } from "discord.js";
 
-import { BirthdayAutomation } from "./automation/get_birthdays";
-import { UserInteractionTracker } from "./automation/user_interactions";
 import { RegisterCommands } from "./commands/register_commands";
 import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "./config";
 import { InteractionHandler } from "./controller/Interaction";
@@ -53,16 +51,6 @@ export class DryscordApplication {
      */
     private interactionHandler: InteractionHandler;
 
-    /**
-     * Serviço de verificação de aniversários
-     */
-    private birthdayAutomation: BirthdayAutomation;
-
-    /**
-     * Serviço de rastreamento de interações
-     */
-    private userInteractionTracker: UserInteractionTracker;
-
     constructor() {
         this.client = new Client({
             intents: [
@@ -77,10 +65,10 @@ export class DryscordApplication {
             failIfNotExists: false,
             partials: [Partials.Channel, Partials.Message, Partials.Reaction, Partials.User, Partials.GuildMember],
         });
+
         this.discordRestClient = new DiscordRestClient().setToken(DISCORD_ACCESS_TOKEN);
-        this.interactionHandler = new InteractionHandler();
-        this.birthdayAutomation = new BirthdayAutomation(this.client);
-        this.userInteractionTracker = UserInteractionTracker.getInstance();
+
+        this.interactionHandler = new InteractionHandler(this.client);
     }
 
     /**
@@ -174,10 +162,10 @@ export class DryscordApplication {
 
             // Iniciar o serviço de verificação de aniversários
             // Executa todos os dias as 00:00
-            this.birthdayAutomation.startBirthdayCheck();
+            this.interactionHandler.handleBirthday();
 
             // Configurar o rastreamento de interações do usuário
-            this.userInteractionTracker.setupTracking(this.client);
+            this.interactionHandler.handleUserInteraction();
 
             // Registrar comandos para todos os servidores onde o bot já está presente
             // essa funcionalidade está desativada para evitar sobrecarga no Servidor do Discord
@@ -194,7 +182,7 @@ export class DryscordApplication {
 
         // Adicionar o novo evento de boas-vindas
         this.client.on(Events.GuildMemberAdd, async (member) => {
-            this.interactionHandler.handleMemberAdd(member);
+            this.interactionHandler.handleMemberAdd();
         });
     }
 }
