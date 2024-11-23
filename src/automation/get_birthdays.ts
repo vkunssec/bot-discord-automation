@@ -5,7 +5,7 @@ import { getBirthdays } from "../core/database/birthdate/get";
 
 /**
  * Classe responsável pela automação de aniversários
- * 
+ *
  * @param client - Client do Discord
  * @param channelId - ID do canal do Discord
  */
@@ -55,11 +55,13 @@ export class BirthdayAutomation {
         const messages = await Promise.all(
             birthdays.map(async (birthday) => {
                 const user = await this.client.users.fetch(birthday.user.id);
-                return channel.send([
-                    `🎉 **Feliz Aniversário** ${user}! 🎂`,
-                    "Que seu dia seja repleto de alegria e realizações!",
-                    "🎈🎊🎁",
-                ].join("\n"));
+                return channel.send(
+                    [
+                        `🎉 **Feliz Aniversário** ${user}! 🎂`,
+                        "Que seu dia seja repleto de alegria e realizações!",
+                        "🎈🎊🎁",
+                    ].join("\n")
+                );
             })
         );
 

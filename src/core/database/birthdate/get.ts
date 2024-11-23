@@ -29,4 +29,4 @@ export async function getBirthdays() {
         console.error("Erro ao buscar aniversariantes:", error);
         return [];
     }
-};
+}

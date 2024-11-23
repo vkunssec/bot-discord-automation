@@ -4,7 +4,7 @@ import { CHANNEL_WELCOME, ROLE_DEFAULT } from "../config";
 
 /**
  * Classe WelcomeMessage
- * 
+ *
  * @param client - Client do Discord
  */
 export class WelcomeMessage {
