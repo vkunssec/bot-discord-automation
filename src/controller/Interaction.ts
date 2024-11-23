@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, GuildMember } from "discord.js";
 import { welcomeMessage } from "../automation/welcome_message";
-import { EmbeddingCommand, PingCommand, RemoveMessagesCommand } from "../commands";
+import { EmbeddingCommand, PingCommand, RemoveMessagesCommand, UserStatsCommand } from "../commands";
 import { RegisterBirthdateCommand } from "../commands/register_birthdate";
 import { Command } from "../core/interface/command";
 
@@ -19,6 +19,7 @@ export class InteractionHandler {
             new PingCommand(),
             new RemoveMessagesCommand(),
             new RegisterBirthdateCommand(),
+            new UserStatsCommand(),
         ];
     }
 

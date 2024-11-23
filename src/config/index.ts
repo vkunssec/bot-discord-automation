@@ -25,3 +25,6 @@ export const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017
 export const MONGODB_DATABASE = process.env.MONGODB_DATABASE ?? "dryscord";
 
 export const MONGODB_COLLECTION_BIRTHDATE = process.env.MONGODB_COLLECTION_BIRTHDATE ?? "users_birthdate";
+
+export const MONGODB_COLLECTION_USER_INTERACTIONS =
+    process.env.MONGODB_COLLECTION_USER_INTERACTIONS ?? "user_interactions";

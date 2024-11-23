@@ -83,6 +83,7 @@ ROLE_DEFAULT=<role_default_id>
 MONGODB_URI=<mongodb_uri>
 MONGODB_DATABASE=<mongodb_database>
 MONGODB_COLLECTION_BIRTHDATE=<collection_birthdate>
+MONGODB_COLLECTION_USER_INTERACTIONS=<collection_user_interactions>
 ```
 
 ## Inicialização
