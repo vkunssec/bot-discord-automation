@@ -30,7 +30,6 @@ import { DeployCommandsProps } from "./core/model/commandsProps";
  * @param {Client} client - Cliente do Discord
  * @param {DiscordRestClient} discordRestClient - Cliente REST do Discord
  * @param {InteractionHandler} interactionHandler - Manipulador de interações
- * @param {BirthdayAutomation} birthdayAutomation - Serviço de verificação de aniversários
  *
  * @version 1.0.0
  * @since 2024-11-22
