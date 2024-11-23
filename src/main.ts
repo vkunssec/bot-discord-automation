@@ -180,7 +180,7 @@ export class DryscordApplication {
         });
 
         // Adicionar o novo evento de boas-vindas
-        this.client.on(Events.GuildMemberAdd, async (member) => {
+        this.client.on(Events.GuildMemberAdd, async () => {
             this.interactionHandler.handleMemberAdd();
         });
     }

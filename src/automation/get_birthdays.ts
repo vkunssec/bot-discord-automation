@@ -52,19 +52,22 @@ export class BirthdayAutomation {
      * Envia as mensagens de aniversário
      */
     private async sendBirthdayMessages(channel: TextChannel, birthdays: any[]): Promise<void> {
-        const messages = await Promise.all(
-            birthdays.map(async (birthday) => {
+        const promises = [];
+        for (const birthday of birthdays) {
+            try {
                 const user = await this.client.users.fetch(birthday.user.id);
-                return channel.send(
+                const message = channel.send(
                     [
                         `🎉 **Feliz Aniversário** ${user}! 🎂`,
                         "Que seu dia seja repleto de alegria e realizações!",
                         "🎈🎊🎁",
                     ].join("\n")
                 );
-            })
-        );
-
-        await Promise.allSettled(messages);
+                promises.push(message);
+            } catch (error) {
+                console.log("Erro ao buscar o usuário pelo id:", error);
+            }
+        }
+        await Promise.allSettled(promises);
     }
 }
