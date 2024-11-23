@@ -31,7 +31,7 @@ export class WelcomeMessage {
     /**
      * Configura o evento de boas-vindas
      */
-    public setupWelcome(): void {
+    public setup(): void {
         this.client.on("guildMemberAdd", async (member: GuildMember) => {
             await this.handleWelcome(member);
         });

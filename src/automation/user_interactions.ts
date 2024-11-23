@@ -20,6 +20,7 @@ export class UserInteractionTracker {
     /**
      * Retorna a instância da classe
      *
+     * @param client - Client do Discord
      * @returns - Instância da classe
      */
     public static getInstance(client: Client): UserInteractionTracker {
@@ -31,10 +32,8 @@ export class UserInteractionTracker {
 
     /**
      * Configura o rastreamento de interações
-     *
-     * @param client - Cliente do Discord
      */
-    public setupTracking(): void {
+    public setup(): void {
         this.client.on("messageCreate", async (message: Message) => {
             if (message.author.bot || !message.guild) return;
             await this.trackMessage(message.author.id, message.guild.id);

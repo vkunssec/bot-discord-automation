@@ -20,7 +20,7 @@ export class BirthdayAutomation {
     /**
      * Inicializa a automação de aniversários
      */
-    public setupBirthday(): void {
+    public setup(): void {
         cron.schedule(this.CRON_EXPRESSION, async () => {
             await this.execute();
         });

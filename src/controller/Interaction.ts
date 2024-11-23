@@ -8,6 +8,8 @@ import { Command } from "../core/interface/command";
 
 /**
  * Handler para controlar as Interações
+ *
+ * @param client - Client do Discord
  */
 export class InteractionHandler {
     private commands: Command[];
@@ -80,20 +82,20 @@ export class InteractionHandler {
      * Evento de boas-vindas
      */
     public handleMemberAdd() {
-        new WelcomeMessage(this.client).setupWelcome();
+        new WelcomeMessage(this.client).setup();
     }
 
     /**
      * Evento de aniversário
      */
     public handleBirthday() {
-        new BirthdayAutomation(this.client).setupBirthday();
+        new BirthdayAutomation(this.client).setup();
     }
 
     /**
      * Configura o rastreamento de interações do usuário
      */
     public handleUserInteraction() {
-        new UserInteractionTracker(this.client).setupTracking();
+        new UserInteractionTracker(this.client).setup();
     }
 }
