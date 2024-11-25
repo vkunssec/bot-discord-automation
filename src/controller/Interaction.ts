@@ -1,16 +1,21 @@
-import { ChatInputCommandInteraction, GuildMember } from "discord.js";
-import { welcomeMessage } from "../automation/welcome_message";
+import { ChatInputCommandInteraction, Client } from "discord.js";
+import { BirthdayAutomation } from "../automation/get_birthdays";
+import { UserInteractionTracker } from "../automation/user_interactions";
+import { WelcomeMessage } from "../automation/welcome_message";
 import { EmbeddingCommand, PingCommand, RemoveMessagesCommand, UserStatsCommand } from "../commands";
 import { RegisterBirthdateCommand } from "../commands/register_birthdate";
 import { Command } from "../core/interface/command";
 
 /**
  * Handler para controlar as Interações
+ *
+ * @param client - Client do Discord
  */
 export class InteractionHandler {
     private commands: Command[];
+    private client: Client;
 
-    constructor() {
+    constructor(client: Client) {
         /**
          * Todo novo Comando DEVE ser adicionado no construtor
          */
@@ -21,6 +26,8 @@ export class InteractionHandler {
             new RegisterBirthdateCommand(),
             new UserStatsCommand(),
         ];
+
+        this.client = client;
     }
 
     public getSlashCommands() {
@@ -73,10 +80,22 @@ export class InteractionHandler {
 
     /**
      * Evento de boas-vindas
-     *
-     * @param member - Membro que foi adicionado ao servidor
      */
-    public async handleMemberAdd(member: GuildMember) {
-        await welcomeMessage(member);
+    public handleMemberAdd() {
+        new WelcomeMessage(this.client).setup();
+    }
+
+    /**
+     * Evento de aniversário
+     */
+    public handleBirthday() {
+        new BirthdayAutomation(this.client).setup();
+    }
+
+    /**
+     * Configura o rastreamento de interações do usuário
+     */
+    public handleUserInteraction() {
+        new UserInteractionTracker(this.client).setup();
     }
 }

@@ -8,4 +8,6 @@ export interface UserInteraction {
     totalTimeInVoice: number;
     reactionCount: number;
     lastInteraction: Date;
+    lastVoiceJoin: Date;
+    isInVoice: boolean;
 }

@@ -4,56 +4,70 @@ import { CHANNEL_BIRTHDAY } from "../config";
 import { getBirthdays } from "../core/database/birthdate/get";
 
 /**
- * Classe BirthdayAutomation
+ * Classe responsável pela automação de aniversários
  *
- * @param client - Cliente do Discord
+ * @param client - Client do Discord
+ * @param channelId - ID do canal do Discord
  */
 export class BirthdayAutomation {
-    private client: Client;
-    private readonly BIRTHDAY_CHANNEL_ID = CHANNEL_BIRTHDAY;
+    private readonly CRON_EXPRESSION = "0 0 * * *";
 
-    constructor(client: Client) {
-        this.client = client;
-    }
+    constructor(
+        private readonly client: Client,
+        private readonly channelId: string = CHANNEL_BIRTHDAY
+    ) {}
 
     /**
-     * Inicia a verificação dos aniversários
+     * Inicializa a automação de aniversários
      */
-    public startBirthdayCheck() {
-        // Executa todos os dias as 00:00
-        cron.schedule("0 0 * * *", async () => {
-            await this.checkBirthdays();
+    public setup(): void {
+        cron.schedule(this.CRON_EXPRESSION, async () => {
+            await this.execute();
         });
     }
 
     /**
-     * Verifica os aniversários
+     * Executa a verificação de aniversários
      */
-    private async checkBirthdays() {
+    private async execute(): Promise<void> {
         try {
             const birthdays = await getBirthdays();
+            if (!birthdays.length) return;
 
-            if (birthdays.length === 0) return;
-
-            const channel = (await this.client.channels.fetch(this.BIRTHDAY_CHANNEL_ID)) as TextChannel;
-
-            const promises = [];
-
-            for (const birthday of birthdays) {
-                const user = await this.client.users.fetch(birthday.user.id);
-
-                const message = [
-                    `🎉 **Feliz Aniversário** ${user}! 🎂`,
-                    "Que seu dia seja repleto de alegria e realizações!",
-                    "🎈🎊🎁",
-                ].join("\n");
-
-                promises.push(channel.send(message));
-            }
-
-            await Promise.allSettled(promises);
+            const channel = await this.getChannel();
+            await this.sendBirthdayMessages(channel, birthdays);
         } catch (error) {
-            console.error("Erro ao verificar aniversários:", error);
+            console.error("[BirthdayAutomation] Erro ao verificar aniversários:", error);
         }
+    }
+
+    /**
+     * Obtém o canal de aniversários
+     */
+    private async getChannel(): Promise<TextChannel> {
+        return (await this.client.channels.fetch(this.channelId)) as TextChannel;
+    }
+
+    /**
+     * Envia as mensagens de aniversário
+     */
+    private async sendBirthdayMessages(channel: TextChannel, birthdays: any[]): Promise<void> {
+        const promises = [];
+        for (const birthday of birthdays) {
+            try {
+                const user = await this.client.users.fetch(birthday.user.id);
+                const message = channel.send(
+                    [
+                        `🎉 **Feliz Aniversário** ${user}! 🎂`,
+                        "Que seu dia seja repleto de alegria e realizações!",
+                        "🎈🎊🎁",
+                    ].join("\n")
+                );
+                promises.push(message);
+            } catch (error) {
+                console.log("Erro ao buscar o usuário pelo id:", error);
+            }
+        }
+        await Promise.allSettled(promises);
     }
 }

@@ -6,7 +6,7 @@ import { MongoDB } from "../mongodb";
  *
  * @returns Lista de aniversariantes
  */
-export const getBirthdays = async () => {
+export async function getBirthdays() {
     try {
         const mongodb = MongoDB.getInstance();
         const db = mongodb.getDatabase();
@@ -29,4 +29,4 @@ export const getBirthdays = async () => {
         console.error("Erro ao buscar aniversariantes:", error);
         return [];
     }
-};
+}

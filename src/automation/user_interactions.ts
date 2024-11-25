@@ -1,39 +1,45 @@
 import { Client, Message, MessageReaction, PartialMessageReaction, PartialUser, User, VoiceState } from "discord.js";
-import { MONGODB_COLLECTION_USER_INTERACTIONS } from "../config";
-import { MongoDB } from "../core/database/mongodb";
+import { getUserInteraction } from "../core/database/user/interaction/get";
+import { updateUserInteraction } from "../core/database/user/interaction/update";
+import { Document } from "../core/interface/document";
 import { UserInteraction } from "../core/interface/user_interaction";
 
 /**
  * Classe para rastrear as interações do usuário
+ *
+ * @param client - Client do Discord
  */
 export class UserInteractionTracker {
     private static instance: UserInteractionTracker;
-    private collection = MONGODB_COLLECTION_USER_INTERACTIONS;
+    private client: Client;
+
+    constructor(client: Client) {
+        this.client = client;
+    }
 
     /**
      * Retorna a instância da classe
      *
+     * @param client - Client do Discord
      * @returns - Instância da classe
      */
-    public static getInstance(): UserInteractionTracker {
+    public static getInstance(client: Client): UserInteractionTracker {
         if (!UserInteractionTracker.instance) {
-            UserInteractionTracker.instance = new UserInteractionTracker();
+            UserInteractionTracker.instance = new UserInteractionTracker(client);
         }
         return UserInteractionTracker.instance;
     }
 
     /**
      * Configura o rastreamento de interações
-     *
-     * @param client - Cliente do Discord
      */
-    public setupTracking(client: Client): void {
-        client.on("messageCreate", async (message: Message) => {
+    public setup(): void {
+        this.client.on("messageCreate", async (message: Message) => {
             if (message.author.bot || !message.guild) return;
             await this.trackMessage(message.author.id, message.guild.id);
         });
 
-        client.on(
+        this.client.on(
             "messageReactionAdd",
             async (reaction: MessageReaction | PartialMessageReaction, user: User | PartialUser) => {
                 try {
@@ -55,7 +61,7 @@ export class UserInteractionTracker {
             }
         );
 
-        client.on("voiceStateUpdate", async (oldState: VoiceState, newState: VoiceState) => {
+        this.client.on("voiceStateUpdate", async (oldState: VoiceState, newState: VoiceState) => {
             // Usuário entrou em um canal de voz
             if (!oldState.channelId && newState.channelId) {
                 await this.handleVoiceJoin(newState.member!.id, newState.guild.id);
@@ -79,17 +85,12 @@ export class UserInteractionTracker {
      * @param guildId - ID do servidor
      */
     private async trackMessage(userId: string, guildId: string): Promise<void> {
-        const mongodb = MongoDB.getInstance();
-        const db = mongodb.getDatabase();
-        await db.collection(this.collection).updateOne(
-            { userId, guildId },
-            {
-                $inc: { messageCount: 1 },
-                $set: { lastInteraction: new Date() },
-                $setOnInsert: { reactionCount: 0 },
-            },
-            { upsert: true }
-        );
+        const data: Partial<Document> = {
+            $inc: { messageCount: 1 },
+            $set: { lastInteraction: new Date() },
+            $setOnInsert: { reactionCount: 0 },
+        };
+        await updateUserInteraction({ userId, guildId }, data);
     }
 
     /**
@@ -99,17 +100,12 @@ export class UserInteractionTracker {
      * @param guildId - ID do servidor
      */
     private async trackReaction(userId: string, guildId: string): Promise<void> {
-        const mongodb = MongoDB.getInstance();
-        const db = mongodb.getDatabase();
-        await db.collection(this.collection).updateOne(
-            { userId, guildId },
-            {
-                $inc: { reactionCount: 1 },
-                $set: { lastInteraction: new Date() },
-                $setOnInsert: { messageCount: 0 },
-            },
-            { upsert: true }
-        );
+        const data: Partial<Document> = {
+            $inc: { reactionCount: 1 },
+            $set: { lastInteraction: new Date() },
+            $setOnInsert: { messageCount: 0 },
+        };
+        await updateUserInteraction({ userId, guildId }, data);
     }
 
     /**
@@ -120,19 +116,18 @@ export class UserInteractionTracker {
      * @returns - Estatísticas de interação do usuário
      */
     public async getUserStats(userId: string, guildId: string): Promise<UserInteraction | null> {
-        const mongodb = MongoDB.getInstance();
-        const db = mongodb.getDatabase();
-
-        const result = await db.collection(this.collection).findOne({ userId, guildId });
-        if (!result) return null;
+        const userActivity: UserInteraction | null = await getUserInteraction({ userId, guildId });
+        if (!userActivity) return null;
 
         return {
-            userId: result.userId,
-            guildId: result.guildId,
-            messageCount: result.messageCount,
-            reactionCount: result.reactionCount,
-            totalTimeInVoice: result.totalTimeInVoice || 0,
-            lastInteraction: result.lastInteraction,
+            userId: userActivity.userId,
+            guildId: userActivity.guildId,
+            messageCount: userActivity.messageCount,
+            reactionCount: userActivity.reactionCount,
+            totalTimeInVoice: userActivity.totalTimeInVoice || 0,
+            lastInteraction: userActivity.lastInteraction,
+            lastVoiceJoin: userActivity.lastVoiceJoin || null,
+            isInVoice: userActivity.isInVoice || false,
         };
     }
 
@@ -143,20 +138,15 @@ export class UserInteractionTracker {
      * @param guildId - ID do servidor
      */
     private async handleVoiceJoin(userId: string, guildId: string): Promise<void> {
-        const mongodb = MongoDB.getInstance();
-        const db = mongodb.getDatabase();
-
-        await db.collection(this.collection).updateOne(
-            { userId, guildId },
-            {
-                $set: {
-                    lastVoiceJoin: new Date(),
-                    isInVoice: true,
-                },
-                $setOnInsert: { totalTimeInVoice: 0 },
+        const data: Partial<Document> = {
+            $set: {
+                lastVoiceJoin: new Date(),
+                isInVoice: true,
+                lastInteraction: new Date(),
             },
-            { upsert: true }
-        );
+            $setOnInsert: { totalTimeInVoice: 0 },
+        };
+        await updateUserInteraction({ userId, guildId }, data);
     }
 
     /**
@@ -166,25 +156,20 @@ export class UserInteractionTracker {
      * @param guildId - ID do servidor
      */
     private async handleVoiceLeave(userId: string, guildId: string): Promise<void> {
-        const mongodb = MongoDB.getInstance();
-        const db = mongodb.getDatabase();
+        const userActivity: UserInteraction | null = await getUserInteraction({ userId, guildId });
 
-        const userActivity = await db.collection(this.collection).findOne({ userId, guildId });
-
-        if (userActivity && userActivity.lastVoiceJoin) {
+        if (userActivity && userActivity.isInVoice) {
             // Calcula o tempo em minutos que o usuário ficou em voz
             const timeSpent = Math.floor((new Date().getTime() - userActivity.lastVoiceJoin.getTime()) / 1000 / 60);
 
-            await db.collection(this.collection).updateOne(
-                { userId, guildId },
-                {
-                    $inc: { totalTimeInVoice: timeSpent },
-                    $set: {
-                        lastVoiceJoin: null,
-                        isInVoice: false,
-                    },
-                }
-            );
+            const data: Partial<Document> = {
+                $inc: { totalTimeInVoice: timeSpent },
+                $set: {
+                    isInVoice: false,
+                    lastInteraction: new Date(),
+                },
+            };
+            await updateUserInteraction({ userId, guildId }, data);
         }
     }
 

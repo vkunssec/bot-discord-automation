@@ -133,3 +133,7 @@ Demais dependências para desenvolvimento
 -   [typedoc](https://www.npmjs.com/package/typedoc)
 -   [eslint](https://www.npmjs.com/package/eslint)
 -   [eslint-config-prettier](https://www.npmjs.com/package/eslint-config-prettier)
+
+## Documentação
+
+Para mais informações sobre o projeto, acesse a [Documentação](./documentation.md)
