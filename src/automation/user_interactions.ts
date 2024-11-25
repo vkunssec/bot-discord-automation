@@ -1,8 +1,9 @@
 import { Client, Message, MessageReaction, PartialMessageReaction, PartialUser, User, VoiceState } from "discord.js";
-import { getUserInteraction } from "../core/database/interaction/get";
-import { updateUserInteraction } from "../core/database/interaction/update";
-import { Document } from "../core/interface/document";
-import { UserInteraction } from "../core/interface/user_interaction";
+
+import { getUserInteraction } from "@/core/database/interaction/get";
+import { updateUserInteraction } from "@/core/database/interaction/update";
+import { Document } from "@/core/interface/document";
+import { UserInteraction } from "@/core/interface/user_interaction";
 
 /**
  * Classe para rastrear as interações do usuário

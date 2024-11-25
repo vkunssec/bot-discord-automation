@@ -1,7 +1,8 @@
 import { Client, TextChannel } from "discord.js";
 import cron from "node-cron";
-import { CHANNEL_BIRTHDAY } from "../config";
-import { getBirthdays } from "../core/database/birthdate/get";
+
+import { CHANNEL_BIRTHDAY } from "@/config";
+import { getBirthdays } from "@/core/database/birthdate/get";
 
 /**
  * Classe responsável pela automação de aniversários

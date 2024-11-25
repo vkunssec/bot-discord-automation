@@ -1,8 +1,9 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, TextChannel } from "discord.js";
-import { UserInteractionTracker } from "../automation/user_interactions";
-import { Logs } from "../controller/Logs";
-import { Command } from "../core/interface/command";
-import { Points } from "../tools/points";
+
+import { UserInteractionTracker } from "@/automation/user_interactions";
+import { Logs } from "@/controller/Logs";
+import { Command } from "@/core/interface/command";
+import { Points } from "@/tools/points";
 
 /**
  * Comando para mostrar as estatísticas de interação do usuário

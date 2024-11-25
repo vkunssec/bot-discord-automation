@@ -1,4 +1,4 @@
-import { Document } from "./document";
+import { Document } from "@/core/interface/document";
 
 /**
  * Interface para o aniversário do usuário

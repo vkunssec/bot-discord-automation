@@ -1,8 +1,9 @@
 import { Message, REST, Routes, TextChannel } from "discord.js";
-import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "../config";
-import { InteractionHandler } from "../controller/Interaction";
-import { Logs } from "../controller/Logs";
-import { Command } from "../core/interface/command";
+
+import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "@/config";
+import { InteractionHandler } from "@/controller/Interaction";
+import { Logs } from "@/controller/Logs";
+import { Command } from "@/core/interface/command";
 
 /**
  * Comando para registrar os comandos do bot

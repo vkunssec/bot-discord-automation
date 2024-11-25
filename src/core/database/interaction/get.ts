@@ -1,6 +1,6 @@
-import { MONGODB_COLLECTION_USER_INTERACTIONS } from "../../../config";
-import { UserInteraction } from "../../interface/user_interaction";
-import { MongoDB } from "../mongodb";
+import { MONGODB_COLLECTION_USER_INTERACTIONS } from "@/config";
+import { MongoDB } from "@/core/database/mongodb";
+import { UserInteraction } from "@/core/interface/user_interaction";
 
 /**
  * Obtém as estatísticas de interação do usuário

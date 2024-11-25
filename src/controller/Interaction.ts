@@ -1,10 +1,11 @@
 import { ChatInputCommandInteraction, Client } from "discord.js";
-import { BirthdayAutomation } from "../automation/get_birthdays";
-import { UserInteractionTracker } from "../automation/user_interactions";
-import { WelcomeMessage } from "../automation/welcome_message";
-import { EmbeddingCommand, PingCommand, RemoveMessagesCommand, UserStatsCommand } from "../commands";
-import { RegisterBirthdateCommand } from "../commands/register_birthdate";
-import { Command } from "../core/interface/command";
+
+import { BirthdayAutomation } from "@/automation/get_birthdays";
+import { UserInteractionTracker } from "@/automation/user_interactions";
+import { WelcomeMessage } from "@/automation/welcome_message";
+import { EmbeddingCommand, PingCommand, RemoveMessagesCommand, UserStatsCommand } from "@/commands";
+import { RegisterBirthdateCommand } from "@/commands/register_birthdate";
+import { Command } from "@/core/interface/command";
 
 /**
  * Handler para controlar as Interações

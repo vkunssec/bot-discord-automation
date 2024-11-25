@@ -10,11 +10,11 @@ import {
     Routes,
 } from "discord.js";
 
-import { RegisterCommands } from "./commands";
-import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "./config";
-import { InteractionHandler } from "./controller/Interaction";
-import { MongoDB } from "./core/database/mongodb";
-import { DeployCommandsProps } from "./core/model/commandsProps";
+import { RegisterCommands } from "@/commands";
+import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "@/config";
+import { InteractionHandler } from "@/controller/Interaction";
+import { MongoDB } from "@/core/database/mongodb";
+import { DeployCommandsProps } from "@/core/model/commandsProps";
 
 /**
  * Classe DryscordApplication

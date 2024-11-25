@@ -1,4 +1,4 @@
-import { DryscordApplication } from "./main";
+import { DryscordApplication } from "@/main";
 
 /**
  * Inicialização do Serviço Dryscord Application

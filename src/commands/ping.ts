@@ -6,8 +6,8 @@ import {
     TextChannel,
 } from "discord.js";
 
-import { Logs } from "../controller/Logs";
-import { Command } from "../core/interface/command";
+import { Logs } from "@/controller/Logs";
+import { Command } from "@/core/interface/command";
 
 /**
  * Criação básica de um Comando

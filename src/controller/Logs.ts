@@ -1,6 +1,7 @@
 import { ChatInputCommandInteraction, Collection, EmbedBuilder, Message, TextChannel } from "discord.js";
-import { CHANNEL_LOGS } from "../config";
-import { LogData } from "../core/model/commandsProps";
+
+import { CHANNEL_LOGS } from "@/config";
+import { LogData } from "@/core/model/commandsProps";
 
 export class Logs {
     /**

@@ -6,10 +6,10 @@ import {
     TextChannel,
 } from "discord.js";
 
-import { Logs } from "../controller/Logs";
-import { insertBirthdate } from "../core/database/birthdate/insert";
-import { Command } from "../core/interface/command";
-import { UserBirthday } from "../core/interface/user_birthday";
+import { Logs } from "@/controller/Logs";
+import { insertBirthdate } from "@/core/database/birthdate/insert";
+import { Command } from "@/core/interface/command";
+import { UserBirthday } from "@/core/interface/user_birthday";
 
 /**
  * Comando para registrar a data de aniversário do usuário

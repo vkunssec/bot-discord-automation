@@ -1,4 +1,4 @@
-import { Document } from "./document";
+import { Document } from "@/core/interface/document";
 
 /**
  * Interface para as estatísticas de interação do usuário

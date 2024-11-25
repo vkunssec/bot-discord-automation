@@ -7,8 +7,8 @@ import {
     TextChannel,
 } from "discord.js";
 
-import { Logs } from "../controller/Logs";
-import { Command } from "../core/interface/command";
+import { Logs } from "@/controller/Logs";
+import { Command } from "@/core/interface/command";
 
 /**
  * Remoção de Mensagens de um Canal

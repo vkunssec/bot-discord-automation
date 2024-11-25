@@ -1,6 +1,6 @@
 import { Client, EmbedBuilder, GuildMember } from "discord.js";
 
-import { CHANNEL_WELCOME, ROLE_DEFAULT } from "../config";
+import { CHANNEL_WELCOME, ROLE_DEFAULT } from "@/config";
 
 /**
  * Classe WelcomeMessage

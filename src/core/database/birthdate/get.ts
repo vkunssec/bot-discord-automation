@@ -1,5 +1,5 @@
-import { MONGODB_COLLECTION_BIRTHDATE } from "../../../config";
-import { MongoDB } from "../mongodb";
+import { MONGODB_COLLECTION_BIRTHDATE } from "@/config";
+import { MongoDB } from "@/core/database/mongodb";
 
 /**
  * Busca todos os aniversariantes do dia

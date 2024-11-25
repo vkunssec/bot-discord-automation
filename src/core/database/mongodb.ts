@@ -1,5 +1,6 @@
 import { Db, MongoClient } from "mongodb";
-import { MONGODB_DATABASE, MONGODB_URI } from "../../config";
+
+import { MONGODB_DATABASE, MONGODB_URI } from "@/config";
 
 /**
  * Classe MongoDB

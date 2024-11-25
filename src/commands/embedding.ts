@@ -7,8 +7,9 @@ import {
     SlashCommandBuilder,
     TextChannel,
 } from "discord.js";
-import { Logs } from "../controller/Logs";
-import { Command } from "../core/interface/command";
+
+import { Logs } from "@/controller/Logs";
+import { Command } from "@/core/interface/command";
 
 /**
  * Comando para criar um incorporador de mensagens personalizado

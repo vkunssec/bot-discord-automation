@@ -1,6 +1,6 @@
-import { MONGODB_COLLECTION_BIRTHDATE } from "../../../config";
-import { UserBirthday } from "../../interface/user_birthday";
-import { MongoDB } from "../mongodb";
+import { MONGODB_COLLECTION_BIRTHDATE } from "@/config";
+import { MongoDB } from "@/core/database/mongodb";
+import { UserBirthday } from "@/core/interface/user_birthday";
 
 /**
  * Registra a data de aniversário do usuário no banco de dados MongoDB
