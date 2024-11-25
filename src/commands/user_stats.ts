@@ -1,10 +1,14 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import { ChatInputCommandInteraction, SlashCommandBuilder, TextChannel } from "discord.js";
 import { UserInteractionTracker } from "../automation/user_interactions";
+import { Logs } from "../controller/Logs";
 import { Command } from "../core/interface/command";
 import { Points } from "../tools/points";
 
 /**
  * Comando para mostrar as estatísticas de interação do usuário
+ *
+ * @class UserStatsCommand
+ * @implements Command
  */
 export class UserStatsCommand implements Command {
     name = "stats";
@@ -64,6 +68,13 @@ export class UserStatsCommand implements Command {
                 `**Total de Pontos:** ${totalPts}\n` +
                 `**Nível:** ${level}\n\n` +
                 `Última interação: ${stats.lastInteraction.toLocaleString()}`,
+        });
+
+        Logs.GenericInfoLog({
+            interaction: interaction,
+            command: this.name,
+            description: this.description,
+            channel: interaction.channel as TextChannel,
         });
     }
 }

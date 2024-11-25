@@ -12,6 +12,9 @@ import { Command } from "../core/interface/command";
 /**
  * Criação básica de um Comando
  * A partir da interface Command, se define o Nome, Descrição e o Construtor do comando
+ *
+ * @class PingCommand
+ * @implements Command
  */
 export class PingCommand implements Command {
     name = "ping";

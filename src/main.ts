@@ -10,7 +10,7 @@ import {
     Routes,
 } from "discord.js";
 
-import { RegisterCommands } from "./commands/register_commands";
+import { RegisterCommands } from "./commands";
 import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "./config";
 import { InteractionHandler } from "./controller/Interaction";
 import { MongoDB } from "./core/database/mongodb";

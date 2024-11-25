@@ -6,6 +6,9 @@ import { Command } from "../core/interface/command";
 
 /**
  * Comando para registrar os comandos do bot
+ *
+ * @class RegisterCommands
+ * @implements Command
  */
 export class RegisterCommands implements Command {
     name = "register";
@@ -22,7 +25,7 @@ export class RegisterCommands implements Command {
         }
 
         // Obtém os comandos registrados
-        const commands = new InteractionHandler().getSlashCommands();
+        const commands = new InteractionHandler(context.client).getSlashCommands();
 
         try {
             console.log(`Registering commands for guild: ${context.guild!.id}`);

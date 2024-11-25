@@ -12,6 +12,9 @@ import { Command } from "../core/interface/command";
 
 /**
  * Remoção de Mensagens de um Canal
+ *
+ * @class RemoveMessagesCommand
+ * @implements Command
  */
 export class RemoveMessagesCommand implements Command {
     name = "clear";

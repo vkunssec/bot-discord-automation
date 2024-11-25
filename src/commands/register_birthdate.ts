@@ -1,10 +1,21 @@
-import { ApplicationCommandType, CacheType, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import {
+    ApplicationCommandType,
+    CacheType,
+    ChatInputCommandInteraction,
+    SlashCommandBuilder,
+    TextChannel,
+} from "discord.js";
 
+import { Logs } from "../controller/Logs";
 import { insertBirthdate } from "../core/database/birthdate/insert";
 import { Command } from "../core/interface/command";
+import { UserBirthday } from "../core/interface/user_birthday";
 
 /**
  * Comando para registrar a data de aniversário do usuário
+ *
+ * @class RegisterBirthdateCommand
+ * @implements Command
  */
 export class RegisterBirthdateCommand implements Command {
     name = "register_birthdate";
@@ -39,9 +50,22 @@ export class RegisterBirthdateCommand implements Command {
             return interaction.reply({ content: "Por favor, informe um dia e mês válidos!", ephemeral: true });
         }
 
+        const data: UserBirthday = {
+            userId: interaction.user.id,
+            day: day!,
+            month: month!,
+        };
+
         try {
             // Registra a data de aniversário do usuário no banco de dados MongoDB
-            await insertBirthdate(interaction.user, day!, month!);
+            await insertBirthdate(data);
+
+            Logs.GenericInfoLog({
+                interaction: interaction,
+                command: this.name,
+                description: this.description,
+                channel: interaction.channel as TextChannel,
+            });
 
             return interaction.reply({ content: "Data de aniversário registrada com sucesso! 🎂", ephemeral: true });
         } catch (error) {

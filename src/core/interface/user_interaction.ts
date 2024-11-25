@@ -1,7 +1,12 @@
+import { Document } from "./document";
+
 /**
  * Interface para as estatísticas de interação do usuário
+ *
+ * @interface UserInteraction
+ * @extends Document
  */
-export interface UserInteraction {
+export interface UserInteraction extends Document {
     userId: string;
     guildId: string;
     messageCount: number;

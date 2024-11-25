@@ -5,11 +5,16 @@ import {
     GuildMember,
     InteractionResponse,
     SlashCommandBuilder,
+    TextChannel,
 } from "discord.js";
+import { Logs } from "../controller/Logs";
 import { Command } from "../core/interface/command";
 
 /**
  * Comando para criar um incorporador de mensagens personalizado
+ *
+ * @class EmbeddingCommand
+ * @implements Command
  */
 export class EmbeddingCommand implements Command {
     name = "embed";
@@ -139,6 +144,13 @@ export class EmbeddingCommand implements Command {
                 console.error("Erro ao processar JSON dos campos:", error);
             }
         }
+
+        Logs.GenericInfoLog({
+            interaction: interaction,
+            command: this.name,
+            description: this.description,
+            channel: interaction.channel as TextChannel,
+        });
 
         return await interaction.reply({ embeds: [embed] });
     }
