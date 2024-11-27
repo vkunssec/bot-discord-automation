@@ -57,7 +57,7 @@ export class InteractionHandler {
             return Promise.reject("Command not matched");
         }
 
-        matchedCommand
+        await matchedCommand
             .execute(interaction)
             .then(() => {
                 console.log(`Successfully executed command [/${interaction.commandName}]`, {

@@ -38,6 +38,6 @@ export class PingCommand implements Command {
             channel: interaction.channel as TextChannel,
         });
 
-        return interaction.reply(`Pong! (≧∇≦)ﾉ`);
+        return await interaction.reply(`Pong! (≧∇≦)ﾉ`);
     }
 }

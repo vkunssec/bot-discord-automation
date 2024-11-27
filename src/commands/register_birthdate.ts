@@ -47,7 +47,7 @@ export class RegisterBirthdateCommand implements Command {
         const month = interaction.options.getNumber("mês");
 
         if (day! > 31 || day! < 1 || month! > 12 || month! < 1) {
-            return interaction.reply({ content: "Por favor, informe um dia e mês válidos!", ephemeral: true });
+            return await interaction.reply({ content: "Por favor, informe um dia e mês válidos!", ephemeral: true });
         }
 
         const data: UserBirthday = {
@@ -67,10 +67,13 @@ export class RegisterBirthdateCommand implements Command {
                 channel: interaction.channel as TextChannel,
             });
 
-            return interaction.reply({ content: "Data de aniversário registrada com sucesso! 🎂", ephemeral: true });
+            return await interaction.reply({
+                content: "Data de aniversário registrada com sucesso! 🎂",
+                ephemeral: true,
+            });
         } catch (error) {
             console.error("Erro ao registrar aniversário:", error);
-            return interaction.reply({
+            return await interaction.reply({
                 content: "Desculpe, ocorreu um erro ao registrar seu aniversário. Tente novamente mais tarde.",
                 ephemeral: true,
             });
