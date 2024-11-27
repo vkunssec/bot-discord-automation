@@ -13,7 +13,6 @@ import {
 import { RegisterCommands } from "@/commands";
 import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "@/config";
 import { InteractionHandler } from "@/controller/Interaction";
-import { MongoDB } from "@/core/database/mongodb";
 import { DeployCommandsProps } from "@/core/model/commandsProps";
 
 /**
@@ -74,8 +73,8 @@ export class DryscordApplication {
      * Método de inicio do serviço
      * Necessário TOKEN de acesso para validação
      */
-    public start() {
-        this.client
+    public async start() {
+        await this.client
             .login(DISCORD_ACCESS_TOKEN)
             .then(() => {
                 // Em caso de sucesso no login a partir do Token de acesso,
@@ -137,7 +136,7 @@ export class DryscordApplication {
         });
 
         // Levantar o serviço do bot
-        this.client.on(Events.ClientReady, async () => {
+        this.client.on(Events.ClientReady, () => {
             console.log("Dryscord Bot is Ready! 🤖");
 
             // https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types
@@ -150,15 +149,6 @@ export class DryscordApplication {
                 ],
             });
 
-            /**
-             * Conectar ao banco de dados MongoDB
-             * Necessário para que alguns comandos funcionem
-             * Abrindo a conexão quando a aplicação é levantada para
-             * Aproveitar uma mesma conexão em toda aplicação
-             * Diminuindo a quantidade de conexões ao banco de dados
-             */
-            await MongoDB.getInstance().connect();
-
             // Iniciar o serviço de verificação de aniversários
             // Executa todos os dias as 00:00
             this.interactionHandler.handleBirthday();
@@ -170,7 +160,7 @@ export class DryscordApplication {
             // essa funcionalidade está desativada para evitar sobrecarga no Servidor do Discord
             // porque existe um limite atualização de comandos por dia
             this.client.guilds.cache.forEach((guild: Guild) => {
-                this.registerSlashCommands({ guildId: guild.id });
+                // this.registerSlashCommands({ guildId: guild.id });
             });
         });
 

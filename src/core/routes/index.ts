@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import { MongoDB } from "@/core/database/mongodb";
+
 /**
  * Rotas da aplicação
  *
@@ -15,8 +17,14 @@ router.get("/ping", (req, res) => {
     res.send("Pong!");
 });
 
-router.get("/readyz", (req, res) => {
-    res.send("Ready!");
+router.get("/readyz", async (req, res) => {
+    try {
+        const mongodb = MongoDB.getInstance();
+        await mongodb.connect();
+        res.send("Ready! MongoDB Connected");
+    } catch (error) {
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 router.get("/livez", (req, res) => {

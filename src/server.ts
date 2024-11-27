@@ -5,6 +5,7 @@ import helmet from "helmet";
 import { PORT } from "@/config";
 import router from "@/core/routes";
 import { DryscordApplication } from "@/main";
+import { MongoDB } from "@/core/database/mongodb";
 
 /**
  * Inicialização do Servidor Express
@@ -22,10 +23,28 @@ app.use(helmet());
 // Rotas da aplicação
 app.use(router);
 
-/**
- * Inicialização do Serviço Dryscord Application
- */
-const dryscordApp = new DryscordApplication();
-dryscordApp.start();
+(async () => {
+    /**
+     * Conectar ao banco de dados MongoDB
+     * Necessário para que alguns comandos funcionem
+     * Abrindo a conexão quando a aplicação é levantada para
+     * Aproveitar uma mesma conexão em toda aplicação
+     * Diminuindo a quantidade de conexões ao banco de dados
+     */
+    try {
+        await MongoDB.getInstance().connect();
+    } catch (error) {
+        console.error(error);
+    }
 
-app.listen(PORT);
+    /**
+     * Inicialização do Serviço Dryscord Application
+     */
+    const dryscordApp = new DryscordApplication();
+    await dryscordApp.start();
+
+    // Inicialização do Servidor Express
+    app.listen(PORT, () => {
+        console.log(`Servidor Express iniciado na porta ${PORT}`);
+    });
+})();
