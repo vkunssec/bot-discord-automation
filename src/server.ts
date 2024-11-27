@@ -3,8 +3,8 @@ import express from "express";
 import helmet from "helmet";
 
 import { DryscordApplication } from "@/main";
-import { PORT } from "./config";
-import router from "./core/routes";
+import { PORT } from "@/config";
+import router from "@/core/routes";
 
 /**
  * Inicialização do Servidor Express

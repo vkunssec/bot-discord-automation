@@ -16,6 +16,11 @@
  *  - Bônus de 15% por hora completa
  *  - Exemplo: 90 minutos = 310.5 pontos (270 base + 15% de bônus)
  *
+ * **Anexos:**
+ *  - 1.5 pontos base por anexo
+ *  - Bônus de 5% a cada 100 anexos
+ *  - Exemplo: 250 anexos = 393.75 pontos (375 base + 5% de bônus)
+ *
  * **Sistema de Níveis:**
  *  - Usa raiz quadrada para criar uma progressão mais equilibrada
  *  - Nível 1: 0-99 pontos
