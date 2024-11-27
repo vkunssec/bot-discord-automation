@@ -4,6 +4,20 @@ on:
     push:
         branches: [main, develop]
 
+env:
+    PORT: 80
+    STAGE: "development"
+    DISCORD_ACCESS_TOKEN: ${{ secrets.DISCORD_ACCESS_TOKEN }}
+    CLIENT_ID: ${{ secrets.CLIENT_ID }}
+    CHANNEL_LOGS: ${{ secrets.CHANNEL_LOGS }}
+    CHANNEL_WELCOME: ${{ secrets.CHANNEL_WELCOME }}
+    CHANNEL_BIRTHDAY: ${{ secrets.CHANNEL_BIRTHDAY }}
+    ROLE_DEFAULT: ${{ secrets.ROLE_DEFAULT }}
+    MONGODB_URI: ${{ secrets.MONGODB_URI }}
+    MONGODB_DATABASE: ${{ secrets.MONGODB_DATABASE }}
+    MONGODB_COLLECTION_BIRTHDATE: ${{ secrets.MONGODB_COLLECTION_BIRTHDATE }}
+    MONGODB_COLLECTION_USER_INTERACTIONS: ${{ secrets.MONGODB_COLLECTION_USER_INTERACTIONS }}
+
 jobs:
     deploy-development:
         name: Deploy to Development
