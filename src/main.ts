@@ -74,14 +74,14 @@ export class DryscordApplication {
      * Necessário TOKEN de acesso para validação
      */
     public async start() {
-        await this.client
-            .login(DISCORD_ACCESS_TOKEN)
-            .then(() => {
-                // Em caso de sucesso no login a partir do Token de acesso,
-                // inicia os Event Listeners
-                this.addClientEventHandlers();
-            })
-            .catch((err) => console.error("Error starting bot", err));
+        try {
+            await this.client.login(DISCORD_ACCESS_TOKEN);
+            // Em caso de sucesso no login a partir do Token de acesso,
+            // inicia os Event Listeners
+            this.addClientEventHandlers();
+        } catch (error) {
+            console.error("Error starting bot", error);
+        }
     }
 
     /**

@@ -57,26 +57,25 @@ export class InteractionHandler {
             return Promise.reject("Command not matched");
         }
 
-        await matchedCommand
-            .execute(interaction)
-            .then(() => {
-                console.log(`Successfully executed command [/${interaction.commandName}]`, {
-                    guild: {
-                        id: interaction.guildId,
-                        name: interaction.guild?.name,
-                    },
-                    user: { name: interaction.user.globalName },
-                });
-            })
-            .catch((err) =>
-                console.log(`Error executing command [/${interaction.commandName}]: ${err}`, {
-                    guild: {
-                        id: interaction.guildId,
-                        name: interaction.guild?.name,
-                    },
-                    user: { name: interaction.user.globalName },
-                })
-            );
+        try {
+            await matchedCommand.execute(interaction);
+            console.log(`Successfully executed command [/${interaction.commandName}]`, {
+                guild: {
+                    id: interaction.guildId,
+                    name: interaction.guild?.name,
+                },
+                user: { name: interaction.user.globalName },
+            });
+        } catch (error) {
+            console.error(error);
+            console.log(`Error executing command [/${interaction.commandName}]: ${error}`, {
+                guild: {
+                    id: interaction.guildId,
+                    name: interaction.guild?.name,
+                },
+                user: { name: interaction.user.globalName },
+            });
+        }
     }
 
     /**
