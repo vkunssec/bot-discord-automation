@@ -11,6 +11,12 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "resolveJsonModule": true,
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "allowJs": true,
+        "checkJs": false,
+        "allowSyntheticDefaultImports": true,
         "paths": {
             "@/*": ["./src/*"]
         }
