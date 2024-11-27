@@ -22,4 +22,6 @@ COPY --from=build /app/build /app/build
 
 USER node
 
+EXPOSE 80
+
 CMD [ "node", "build/server.js" ]
