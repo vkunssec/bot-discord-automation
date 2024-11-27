@@ -67,6 +67,9 @@ Variáveis de Ambiente do projeto, ex.: [.env.example](.env.example)
 # Ambiente
 STAGE=<development | staging | production>
 
+# Porta
+PORT=8080
+
 # Discord
 DISCORD_ACCESS_TOKEN=<discord_token>
 CLIENT_ID=<application_id>

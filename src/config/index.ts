@@ -28,3 +28,5 @@ export const MONGODB_COLLECTION_BIRTHDATE = process.env.MONGODB_COLLECTION_BIRTH
 
 export const MONGODB_COLLECTION_USER_INTERACTIONS =
     process.env.MONGODB_COLLECTION_USER_INTERACTIONS ?? "user_interactions";
+
+export const PORT = process.env.PORT ?? 80;

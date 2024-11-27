@@ -27,6 +27,8 @@
     },
     "homepage": "https://github.com/Dudys37/Bot-Dryscord#readme",
     "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/express": "^5.0.0",
         "@types/node": "^22.9.0",
         "@types/node-cron": "^3.0.11",
         "husky": "^9.0.11",
@@ -37,8 +39,11 @@
         "typescript": "^5.4.5"
     },
     "dependencies": {
+        "cors": "^2.8.5",
         "discord.js": "^14.15.3",
         "dotenv": "^16.4.5",
+        "express": "^4.21.1",
+        "helmet": "^8.0.0",
         "mongodb": "^6.11.0",
         "node-cron": "^3.0.3"
     }
