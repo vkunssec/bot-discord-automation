@@ -92,7 +92,7 @@ export class RemoveMessagesCommand implements Command {
         // Deletar as mensagens
         if (channel instanceof TextChannel) {
             try {
-                channel.bulkDelete(filteredMessages);
+                await channel.bulkDelete(filteredMessages);
                 Logs.DeletedMessages(interaction, filteredMessages, channel);
 
                 const embed = new EmbedBuilder()
