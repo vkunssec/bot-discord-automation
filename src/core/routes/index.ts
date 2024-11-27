@@ -2,7 +2,7 @@ import { Router } from "express";
 
 /**
  * Rotas da aplicação
- * 
+ *
  * Necessário para utilização do serviço do bot no Cloud Run - GCP
  */
 const router = Router();
