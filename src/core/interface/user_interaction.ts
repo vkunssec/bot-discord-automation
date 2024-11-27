@@ -12,6 +12,7 @@ export interface UserInteraction extends Document {
     messageCount: number;
     totalTimeInVoice: number;
     reactionCount: number;
+    attachmentCount: number;
     lastInteraction: Date;
     lastVoiceJoin: Date;
     isInVoice: boolean;

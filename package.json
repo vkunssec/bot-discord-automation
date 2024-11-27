@@ -1,45 +1,45 @@
 {
-  "name": "bot-dryscord",
-  "description": "",
-  "version": "0.0.1",
-  "main": "build/server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch --clear-screen=false src/server.ts",
-    "build": "npx tsc",
-    "prestart": "npm run build",
-    "start": "node build/server.js",
-    "prettier": "npx prettier . !**/**.{json,yml,md} --write",
-    "prepare": "husky",
-    "docs": "npx typedoc --tsconfig tsconfig.json"
-  },
-  "_moduleAliases": {
-    "@/*": "src/*"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Dudys37/Bot-Dryscord.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Dudys37/Bot-Dryscord/issues"
-  },
-  "homepage": "https://github.com/Dudys37/Bot-Dryscord#readme",
-  "devDependencies": {
-    "@types/node": "^22.9.0",
-    "@types/node-cron": "^3.0.11",
-    "husky": "^9.0.11",
-    "prettier": "3.3.3",
-    "prettier-plugin-organize-imports": "^4.0.0",
-    "tsx": "^4.11.2",
-    "typedoc": "^0.26.11",
-    "typescript": "^5.4.5"
-  },
-  "dependencies": {
-    "discord.js": "^14.15.3",
-    "dotenv": "^16.4.5",
-    "mongodb": "^6.11.0",
-    "node-cron": "^3.0.3"
-  }
+    "name": "bot-dryscord",
+    "description": "",
+    "version": "0.0.1",
+    "main": "build/server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "tsx watch --clear-screen=false src/server.ts",
+        "build": "npx tsc",
+        "prestart": "npm run build",
+        "start": "node build/server.js",
+        "prettier": "npx prettier . !**/**.{json,yml,md} --write",
+        "prepare": "husky",
+        "docs": "npx typedoc --tsconfig tsconfig.json"
+    },
+    "_moduleAliases": {
+        "@/*": "src/*"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Dudys37/Bot-Dryscord.git"
+    },
+    "author": "",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/Dudys37/Bot-Dryscord/issues"
+    },
+    "homepage": "https://github.com/Dudys37/Bot-Dryscord#readme",
+    "devDependencies": {
+        "@types/node": "^22.9.0",
+        "@types/node-cron": "^3.0.11",
+        "husky": "^9.0.11",
+        "prettier": "3.3.3",
+        "prettier-plugin-organize-imports": "^4.0.0",
+        "tsx": "^4.11.2",
+        "typedoc": "^0.26.11",
+        "typescript": "^5.4.5"
+    },
+    "dependencies": {
+        "discord.js": "^14.15.3",
+        "dotenv": "^16.4.5",
+        "mongodb": "^6.11.0",
+        "node-cron": "^3.0.3"
+    }
 }
