@@ -8,13 +8,13 @@
         "dev": "tsx watch --clear-screen=false src/server.ts",
         "build": "npx tsc",
         "prestart": "npm run build",
-        "start": "node build/server.js",
+        "start": "node -r module-alias/register build/server.js",
         "prettier": "npx prettier . !**/**.{json,yml,md} --write",
         "prepare": "husky",
         "docs": "npx typedoc --tsconfig tsconfig.json"
     },
     "_moduleAliases": {
-        "@/*": "src/*"
+        "@": "build"
     },
     "repository": {
         "type": "git",
@@ -44,6 +44,7 @@
         "dotenv": "^16.4.5",
         "express": "^4.21.1",
         "helmet": "^8.0.0",
+        "module-alias": "^2.2.3",
         "mongodb": "^6.11.0",
         "node-cron": "^3.0.3"
     }
