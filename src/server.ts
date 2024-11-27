@@ -2,9 +2,9 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 
-import { DryscordApplication } from "@/main";
 import { PORT } from "@/config";
 import router from "@/core/routes";
+import { DryscordApplication } from "@/main";
 
 /**
  * Inicialização do Servidor Express
