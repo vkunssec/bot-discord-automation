@@ -54,8 +54,7 @@ jobs:
                     --memory 128Mi \
                     --min-instances 0 \
                     --max-instances 1 \
-                    --platform managed \
-                    --set-env-vars "PORT=80"
+                    --platform managed
 
     deploy-production:
         name: Deploy to Production
@@ -92,5 +91,4 @@ jobs:
                     --memory 128Mi \
                     --min-instances 0 \
                     --max-instances 1 \
-                    --platform managed \
-                    --set-env-vars "PORT=80"
+                    --platform managed
