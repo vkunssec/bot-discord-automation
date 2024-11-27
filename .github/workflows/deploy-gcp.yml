@@ -5,12 +5,13 @@ on:
         branches: [main, develop]
 
 jobs:
-    deploy:
-        name: Deploy to Cloud Run
+    deploy-development:
+        name: Deploy to Development
+        if: github.ref == 'refs/heads/develop'
         runs-on: ubuntu-latest
-        environment: prd
+        environment: dev
         env:
-            IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/site:latest
+            IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bot-dryscord-dev:latest
         steps:
             # Git checkout
             - name: Checkout
@@ -26,18 +27,54 @@ jobs:
             - name: Configure Docker
               run: gcloud auth configure-docker --quiet
 
-            # Build Docker image
-            - name: Build Docker image
-              run: docker build -t $IMAGE_NAME .
+            - name: Build and Push Docker image
+              run: |
+                  docker build -t $IMAGE_NAME .
+                  docker push $IMAGE_NAME
 
-            # Tag Docker image with GCR URI
-            - name: Tag Docker image
-              run: docker tag $IMAGE_NAME $IMAGE_NAME
+            - name: Deploy to Cloud Run
+              run: |
+                  gcloud run deploy bot-dryscord-dev \
+                    --image $IMAGE_NAME \
+                    --region us-central1 \
+                    --memory 128Mi \
+                    --min-instances 0 \
+                    --max-instances 1 \
+                    --platform managed
 
-            # Push Docker image to Container Registry
-            - name: Push Docker image
-              run: docker push $IMAGE_NAME
+    deploy-production:
+        name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        environment: prd
+        env:
+            IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bot-dryscord:latest
+        steps:
+            # Git checkout
+            - name: Checkout
+              uses: actions/checkout@v2
 
-            # Deploy Docker image to Cloud Run
-            - name: Deploy Docker image to Cloud Run
-              run: gcloud run deploy site --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed
+            # Login to GCP
+            - uses: google-github-actions/setup-gcloud@v0.2.0
+              with:
+                  service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+                  project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+            # gcloud configure docker
+            - name: Configure Docker
+              run: gcloud auth configure-docker --quiet
+
+            - name: Build and Push Docker image
+              run: |
+                  docker build -t $IMAGE_NAME .
+                  docker push $IMAGE_NAME
+
+            - name: Deploy to Cloud Run
+              run: |
+                  gcloud run deploy bot-dryscord \
+                    --image $IMAGE_NAME \
+                    --region us-central1 \
+                    --memory 128Mi \
+                    --min-instances 0 \
+                    --max-instances 1 \
+                    --platform managed
