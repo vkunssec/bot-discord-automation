@@ -5,8 +5,7 @@ on:
         branches: [main, develop]
 
 env:
-    PORT: 80
-    STAGE: "development"
+    STAGE: ${{ secrets.STAGE }}
     DISCORD_ACCESS_TOKEN: ${{ secrets.DISCORD_ACCESS_TOKEN }}
     CLIENT_ID: ${{ secrets.CLIENT_ID }}
     CHANNEL_LOGS: ${{ secrets.CHANNEL_LOGS }}
