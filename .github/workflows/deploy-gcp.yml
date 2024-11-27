@@ -50,9 +50,10 @@ jobs:
                   gcloud run deploy bot-dryscord-dev \
                     --image $IMAGE_NAME \
                     --region us-central1 \
-                    --memory 256Mi \
+                    --memory 512Mi \
                     --min-instances 1 \
                     --max-instances 2 \
+                    --cpu 1 \
                     --platform managed \
                     --set-env-vars "STAGE=$STAGE,\
                     DISCORD_ACCESS_TOKEN=$DISCORD_ACCESS_TOKEN,\
@@ -98,9 +99,10 @@ jobs:
                   gcloud run deploy bot-dryscord \
                     --image $IMAGE_NAME \
                     --region us-central1 \
-                    --memory 128Mi \
-                    --min-instances 0 \
-                    --max-instances 1 \
+                    --memory 512Mi \
+                    --min-instances 1 \
+                    --max-instances 2 \
+                    --cpu 1 \
                     --platform managed \
                     --set-env-vars "STAGE=$STAGE,\
                     DISCORD_ACCESS_TOKEN=$DISCORD_ACCESS_TOKEN,\
