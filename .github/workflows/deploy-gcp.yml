@@ -50,9 +50,9 @@ jobs:
                   gcloud run deploy bot-dryscord-dev \
                     --image $IMAGE_NAME \
                     --region us-central1 \
-                    --memory 128Mi \
-                    --min-instances 0 \
-                    --max-instances 1 \
+                    --memory 256Mi \
+                    --min-instances 1 \
+                    --max-instances 2 \
                     --platform managed
 
     deploy-production:
