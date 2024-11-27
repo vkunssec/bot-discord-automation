@@ -3,9 +3,9 @@ import express from "express";
 import helmet from "helmet";
 
 import { PORT } from "@/config";
+import { MongoDB } from "@/core/database/mongodb";
 import router from "@/core/routes";
 import { DryscordApplication } from "@/main";
-import { MongoDB } from "@/core/database/mongodb";
 
 /**
  * Inicialização do Servidor Express
