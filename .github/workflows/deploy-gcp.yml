@@ -53,7 +53,18 @@ jobs:
                     --memory 256Mi \
                     --min-instances 1 \
                     --max-instances 2 \
-                    --platform managed
+                    --platform managed \
+                    --set-env-vars "STAGE=$STAGE,\
+                    DISCORD_ACCESS_TOKEN=$DISCORD_ACCESS_TOKEN,\
+                    CLIENT_ID=$CLIENT_ID,\
+                    CHANNEL_LOGS=$CHANNEL_LOGS,\
+                    CHANNEL_WELCOME=$CHANNEL_WELCOME,\
+                    CHANNEL_BIRTHDAY=$CHANNEL_BIRTHDAY,\
+                    ROLE_DEFAULT=$ROLE_DEFAULT,\
+                    MONGODB_URI=$MONGODB_URI,\
+                    MONGODB_DATABASE=$MONGODB_DATABASE,\
+                    MONGODB_COLLECTION_BIRTHDATE=$MONGODB_COLLECTION_BIRTHDATE,\
+                    MONGODB_COLLECTION_USER_INTERACTIONS=$MONGODB_COLLECTION_USER_INTERACTIONS"
 
     deploy-production:
         name: Deploy to Production
@@ -90,4 +101,15 @@ jobs:
                     --memory 128Mi \
                     --min-instances 0 \
                     --max-instances 1 \
-                    --platform managed
+                    --platform managed \
+                    --set-env-vars "STAGE=$STAGE,\
+                    DISCORD_ACCESS_TOKEN=$DISCORD_ACCESS_TOKEN,\
+                    CLIENT_ID=$CLIENT_ID,\
+                    CHANNEL_LOGS=$CHANNEL_LOGS,\
+                    CHANNEL_WELCOME=$CHANNEL_WELCOME,\
+                    CHANNEL_BIRTHDAY=$CHANNEL_BIRTHDAY,\
+                    ROLE_DEFAULT=$ROLE_DEFAULT,\
+                    MONGODB_URI=$MONGODB_URI,\
+                    MONGODB_DATABASE=$MONGODB_DATABASE,\
+                    MONGODB_COLLECTION_BIRTHDATE=$MONGODB_COLLECTION_BIRTHDATE,\
+                    MONGODB_COLLECTION_USER_INTERACTIONS=$MONGODB_COLLECTION_USER_INTERACTIONS"
