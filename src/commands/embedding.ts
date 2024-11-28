@@ -3,8 +3,6 @@ import {
     ColorResolvable,
     EmbedBuilder,
     GuildMember,
-    InteractionResponse,
-    Message,
     SlashCommandBuilder,
     TextChannel,
 } from "discord.js";

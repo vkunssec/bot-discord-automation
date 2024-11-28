@@ -1,12 +1,4 @@
-import {
-    ChatInputCommandInteraction,
-    EmbedBuilder,
-    GuildMember,
-    InteractionResponse,
-    Message,
-    SlashCommandBuilder,
-    TextChannel,
-} from "discord.js";
+import { ChatInputCommandInteraction, EmbedBuilder, GuildMember, SlashCommandBuilder, TextChannel } from "discord.js";
 
 import { Logs } from "@/controller/Logs";
 import { Command } from "@/core/interface/command";
