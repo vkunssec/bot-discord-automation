@@ -129,6 +129,7 @@ Principais dependências do projeto em produção
 -   [express](https://www.npmjs.com/package/express)
 -   [cors](https://www.npmjs.com/package/cors)
 -   [helmet](https://www.npmjs.com/package/helmet)
+-   [http-status-codes](https://www.npmjs.com/package/http-status-codes)
 
 Demais dependências para desenvolvimento
 

@@ -7,6 +7,10 @@ import { MongoDB } from "@/core/database/mongodb";
 import router from "@/core/routes";
 import { DryscordApplication } from "@/main";
 
+declare global {
+    var botInstance: DryscordApplication;
+}
+
 /**
  * Inicialização do Servidor Express
  */
@@ -40,8 +44,9 @@ app.use(router);
     /**
      * Inicialização do Serviço Dryscord Application
      */
-    const dryscordApp = new DryscordApplication();
-    await dryscordApp.start();
+    const bot = new DryscordApplication();
+    global.botInstance = bot;
+    await bot.start();
 
     // Inicialização do Servidor Express
     app.listen(PORT, () => {

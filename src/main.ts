@@ -174,4 +174,46 @@ export class DryscordApplication {
             this.interactionHandler.handleMemberAdd();
         });
     }
+
+    /**
+     * Verifica se o bot está pronto para uso
+     *
+     * @returns {boolean} - Retorna true se o bot está pronto para uso
+     */
+    public isReady(): boolean {
+        return this.client?.isReady() ?? false;
+    }
+
+    /**
+     * Retorna o tempo de atividade do bot em formato legível
+     *
+     * @returns {string} - Retorna o tempo de atividade do bot em formato legível
+     */
+    public getUptime(): string {
+        const uptime = this.client?.uptime ?? 0;
+        const seconds = Math.floor(uptime / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        return `${days}d ${hours % 24}h ${minutes % 60}m ${seconds % 60}s`;
+    }
+
+    /**
+     * Retorna o número de servidores em que o bot está presente
+     *
+     * @returns {number} - Retorna o número de servidores em que o bot está presente
+     */
+    public getGuildsCount(): number {
+        return this.client?.guilds.cache.size ?? 0;
+    }
+
+    /**
+     * Retorna a latência do WebSocket do bot
+     *
+     * @returns {number} - Retorna a latência do WebSocket do bot
+     */
+    public getPing(): number {
+        return this.client?.ws.ping ?? 0;
+    }
 }
