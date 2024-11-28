@@ -31,6 +31,8 @@ export class UserStatsCommand implements Command {
      * @param interaction - Interação do usuário
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+        await interaction.deferReply({ ephemeral: true });
+
         const targetUser = interaction.options.getUser("usuario") || interaction.user;
         const guildId = interaction.guildId!;
 
@@ -43,7 +45,7 @@ export class UserStatsCommand implements Command {
 
         // Verificar se as estatísticas foram encontradas
         if (!stats) {
-            await interaction.reply(`Nenhuma interação registrada para ${user}`);
+            await interaction.editReply(`Nenhuma interação registrada para ${user}`);
             return;
         }
 
@@ -93,7 +95,7 @@ export class UserStatsCommand implements Command {
             },
         });
 
-        await interaction.reply({ embeds: [embed] });
+        await interaction.editReply({ embeds: [embed] });
 
         Logs.GenericInfoLog({
             interaction: interaction,

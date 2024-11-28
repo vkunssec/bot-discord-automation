@@ -4,6 +4,7 @@ import {
     EmbedBuilder,
     GuildMember,
     InteractionResponse,
+    Message,
     SlashCommandBuilder,
     TextChannel,
 } from "discord.js";
@@ -60,14 +61,15 @@ export class EmbeddingCommand implements Command {
      * @param interaction - Interação do usuário
      * @returns - Retorno da interação
      */
-    async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean>> {
+    async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean> | Message<boolean>> {
+        await interaction.deferReply({ ephemeral: true });
+
         const { member, options, channel } = interaction;
 
         // Verificar se o usuário tem permissão para deletar mensagens
         if (!(member as GuildMember).permissions.has("ManageMessages")) {
-            return await interaction.reply({
+            return await interaction.editReply({
                 content: "❌ Você não tem permissão para usar este comando!",
-                ephemeral: true,
             });
         }
 

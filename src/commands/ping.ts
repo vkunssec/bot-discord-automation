@@ -31,6 +31,8 @@ export class PingCommand implements Command {
      * - https://discord.js.org/docs/packages/discord.js/14.15.3/InteractionReplyOptions:Interface
      */
     async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<any> {
+        await interaction.deferReply({ ephemeral: true });
+
         Logs.GenericInfoLog({
             interaction: interaction,
             command: this.name,
@@ -38,6 +40,6 @@ export class PingCommand implements Command {
             channel: interaction.channel as TextChannel,
         });
 
-        return await interaction.reply(`Pong! (≧∇≦)ﾉ`);
+        return await interaction.editReply(`Pong! (≧∇≦)ﾉ`);
     }
 }

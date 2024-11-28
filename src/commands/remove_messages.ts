@@ -130,16 +130,14 @@ export class RemoveMessagesCommand implements Command {
                         content: "❌ Ocorreu um erro ao executar o comando. Tente novamente.",
                     });
                 } else {
-                    return await interaction.reply({
+                    return await interaction.editReply({
                         content: "❌ Ocorreu um erro ao executar o comando. Tente novamente.",
-                        ephemeral: true,
                     });
                 }
             } catch (e) {
                 console.error("Erro ao enviar mensagem de erro:", e);
-                return interaction.reply({
+                return await interaction.editReply({
                     content: "❌ Erro crítico ao executar o comando.",
-                    ephemeral: true,
                 });
             }
         }
