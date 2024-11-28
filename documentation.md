@@ -136,6 +136,12 @@ Registra mensagens removidas:
 -   Bônus de 10% a cada 100 mensagens
 -   Exemplo: 250 mensagens = 550 pontos (500 base + 10% + 10% parcial)
 
+#### Anexos
+
+-   1.5 pontos base por anexo
+-   Bônus de 5% a cada 50 anexos
+-   Exemplo: 250 anexos = 393.75 pontos (375 base + 5% de bônus)
+
 #### Reações
 
 -   1 ponto base por reação
@@ -171,3 +177,30 @@ Registra mensagens removidas:
 -   Sistema automático de registro de comandos
 -   Atualização dinâmica de comandos slash
 -   Requer permissão de administrador
+
+## Rotas da API
+
+-   [API](./src/core/routes/index.ts)
+
+### Healthcheck
+
+-   `GET /`
+-   Retorna status 200 e mensagem do bot e banco de dados conectado
+```json
+{
+    "status": "ok",
+    "timestamp": "2024-11-28T17:50:31.104Z",
+    "services": {
+        "database": {
+            "status": "healthy",
+            "latency": "2ms"
+        },
+            "bot": {
+            "status": "healthy",
+            "uptime": "0d 0h 0m 24s",
+            "guilds": 1,
+            "ping": 157
+        }
+    }
+}
+```
