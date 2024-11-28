@@ -26,6 +26,13 @@ jobs:
         env:
             IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bot-dryscord-dev:latest
         steps:
+            # Checkout do Git atualizado
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                persist-credentials: false
+
             # Verificar mudanças no código fonte
             - name: Check for source code changes
               uses: dorny/paths-filter@v2
@@ -37,10 +44,6 @@ jobs:
                         - 'package.json'
                         - 'package-lock.json'
                         - 'Dockerfile'
-
-            # Git checkout
-            - name: Checkout
-              uses: actions/checkout@v2
 
             # Login to GCP
             - uses: google-github-actions/setup-gcloud@v0.2.0
@@ -90,6 +93,13 @@ jobs:
         env:
             IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bot-dryscord:latest
         steps:
+            # Checkout do Git atualizado
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                persist-credentials: false
+
             # Verificar mudanças no código fonte
             - name: Check for source code changes
               uses: dorny/paths-filter@v2
@@ -101,10 +111,6 @@ jobs:
                         - 'package.json'
                         - 'package-lock.json'
                         - 'Dockerfile'
-
-            # Git checkout
-            - name: Checkout
-              uses: actions/checkout@v2
 
             # Login to GCP
             - uses: google-github-actions/setup-gcloud@v0.2.0
