@@ -1,9 +1,6 @@
 # Bot Dryscord
 
-Documentação
-![workflow](https://github.com/vkunssec/Bot-Dryscord/workflows/workflow/badge.svg)
-
-Deploy GCP
+[![workflow](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml/badge.svg)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml)
 [![Deploy GCP](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/deploy-gcp.yml/badge.svg)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/deploy-gcp.yml)
 
 ## Estrutura do Projeto
