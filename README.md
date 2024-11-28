@@ -126,6 +126,9 @@ Principais dependências do projeto em produção
 -   [discord.js](https://www.npmjs.com/package/discord.js)
 -   [mongodb](https://www.npmjs.com/package/mongodb)
 -   [node-cron](https://www.npmjs.com/package/node-cron)
+-   [express](https://www.npmjs.com/package/express)
+-   [cors](https://www.npmjs.com/package/cors)
+-   [helmet](https://www.npmjs.com/package/helmet)
 
 Demais dependências para desenvolvimento
 
