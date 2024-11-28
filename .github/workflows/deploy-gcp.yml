@@ -26,6 +26,18 @@ jobs:
         env:
             IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bot-dryscord-dev:latest
         steps:
+            # Verificar mudanças no código fonte
+            - name: Check for source code changes
+              uses: dorny/paths-filter@v2
+              id: changes
+              with:
+                  filters: |
+                      src:
+                        - 'src/**'
+                        - 'package.json'
+                        - 'package-lock.json'
+                        - 'Dockerfile'
+
             # Git checkout
             - name: Checkout
               uses: actions/checkout@v2
@@ -41,15 +53,18 @@ jobs:
               run: gcloud auth configure-docker --quiet
 
             - name: Build and Push Docker image
+              if: steps.changes.outputs.src == 'true'
               run: |
                   docker build -t $IMAGE_NAME .
                   docker push $IMAGE_NAME
 
             - name: Deploy to Cloud Run
+              if: steps.changes.outputs.src == 'true'
               run: |
                   gcloud run deploy bot-dryscord-dev \
                     --image $IMAGE_NAME \
                     --region us-central1 \
+                    --allow-unauthenticated \
                     --memory 512Mi \
                     --min-instances 1 \
                     --max-instances 2 \
@@ -75,6 +90,18 @@ jobs:
         env:
             IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bot-dryscord:latest
         steps:
+            # Verificar mudanças no código fonte
+            - name: Check for source code changes
+              uses: dorny/paths-filter@v2
+              id: changes
+              with:
+                  filters: |
+                      src:
+                        - 'src/**'
+                        - 'package.json'
+                        - 'package-lock.json'
+                        - 'Dockerfile'
+
             # Git checkout
             - name: Checkout
               uses: actions/checkout@v2
@@ -90,11 +117,13 @@ jobs:
               run: gcloud auth configure-docker --quiet
 
             - name: Build and Push Docker image
+              if: steps.changes.outputs.src == 'true'
               run: |
                   docker build -t $IMAGE_NAME .
                   docker push $IMAGE_NAME
 
             - name: Deploy to Cloud Run
+              if: steps.changes.outputs.src == 'true'
               run: |
                   gcloud run deploy bot-dryscord \
                     --image $IMAGE_NAME \
