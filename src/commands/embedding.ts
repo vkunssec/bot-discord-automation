@@ -62,7 +62,7 @@ export class EmbeddingCommand implements Command {
      * @returns - Retorno da interação
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean> | Message<boolean>> {
-        await interaction.deferReply();
+        await interaction.deferReply({ ephemeral: false, fetchReply: true });
 
         const { member, options, channel } = interaction;
 
@@ -155,6 +155,6 @@ export class EmbeddingCommand implements Command {
             channel: interaction.channel as TextChannel,
         });
 
-        return await interaction.reply({ embeds: [embed] });
+        return await interaction.editReply({ embeds: [embed] });
     }
 }
