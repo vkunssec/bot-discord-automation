@@ -3,7 +3,13 @@ import { ChatInputCommandInteraction, Client } from "discord.js";
 import { BirthdayAutomation } from "@/automation/get_birthdays";
 import { UserInteractionTracker } from "@/automation/user_interactions";
 import { WelcomeMessage } from "@/automation/welcome_message";
-import { EmbeddingCommand, PingCommand, RemoveMessagesCommand, UserStatsCommand } from "@/commands";
+import {
+    EmbeddingCommand,
+    GetBirthdaysCommand,
+    PingCommand,
+    RemoveMessagesCommand,
+    UserStatsCommand,
+} from "@/commands";
 import { RegisterBirthdateCommand } from "@/commands/register_birthdate";
 import { Command } from "@/core/interface/command";
 
@@ -25,12 +31,18 @@ export class InteractionHandler {
             new PingCommand(),
             new RemoveMessagesCommand(),
             new RegisterBirthdateCommand(),
+            new GetBirthdaysCommand(),
             new UserStatsCommand(),
         ];
 
         this.client = client;
     }
 
+    /**
+     * Retorna os comandos em formato JSON
+     *
+     * @returns
+     */
     public getSlashCommands() {
         return this.commands.map((command: Command) => command.slashCommandConfig?.toJSON());
     }

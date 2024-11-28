@@ -3,27 +3,18 @@ import { MongoDB } from "@/core/database/mongodb";
 import { UserBirthday } from "@/core/interface/user_birthday";
 
 /**
- * Busca todos os aniversariantes do dia
+ * Busca todos os aniversariantes de um mês específico
  *
+ * @param month Número do mês para consulta, exemplo: 1 para Janeiro, etc
  * @returns Lista de aniversariantes
  */
-export async function getBirthdays(): Promise<Array<UserBirthday>> {
+export async function getBirthdaysByMonth(month: number): Promise<Array<UserBirthday>> {
     try {
         const mongodb = MongoDB.getInstance();
         const db = mongodb.getDatabase();
 
-        const today = new Date();
-        const currentDay = today.getDate();
-        const currentMonth = today.getMonth() + 1;
-
         // Busca todos os aniversariantes do dia
-        const birthdays = await db
-            .collection(MONGODB_COLLECTION_BIRTHDATE)
-            .find({
-                day: currentDay,
-                month: currentMonth,
-            })
-            .toArray();
+        const birthdays = await db.collection(MONGODB_COLLECTION_BIRTHDATE).find({ month }).sort({ day: 1 }).toArray();
 
         return birthdays.map((birthday) => birthday as UserBirthday);
     } catch (error) {

@@ -41,7 +41,7 @@ export class RemoveMessagesCommand implements Command {
     /**
      * Execução do Comando
      */
-    async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean> | Message<boolean>> {
+    async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         try {
             // Garantir que a interação seja deferida antes de executar operações longas
             await interaction.deferReply({ ephemeral: true });
@@ -50,16 +50,18 @@ export class RemoveMessagesCommand implements Command {
 
             // Verificar se o usuário tem permissão para deletar mensagens
             if (!(member as GuildMember).permissions.has("ManageMessages")) {
-                return await interaction.editReply({
+                await interaction.editReply({
                     content: "❌ Você não tem permissão para usar este comando!",
                 });
+                return;
             }
 
             // Verificar se o canal é de texto
             if (!channel?.isTextBased()) {
-                return await interaction.editReply({
+                await interaction.editReply({
                     content: "❌ Não é possível utilizar esse comando nesse canal!",
                 });
+                return;
             }
 
             // Obter a quantidade de mensagens e o autor
@@ -69,16 +71,18 @@ export class RemoveMessagesCommand implements Command {
 
             // Verificar se a quantidade de mensagens é maior que 100
             if (qty > 100) {
-                return await interaction.editReply({
+                await interaction.editReply({
                     content: "❌ Você só pode deletar até 100 mensagens por vez!",
                 });
+                return;
             }
 
             // Verificar se a quantidade de mensagens é maior que 0
             if (qty < 1) {
-                return await interaction.editReply({
+                await interaction.editReply({
                     content: "❌ A quantidade deve ser maior que 0!",
                 });
+                return;
             }
 
             // Buscar e filtrar mensagens
@@ -106,18 +110,20 @@ export class RemoveMessagesCommand implements Command {
                         )
                         .setTimestamp();
 
-                    return await interaction.editReply({
+                    await interaction.editReply({
                         embeds: [embed],
                     });
+                    return;
                 } catch (error) {
                     console.error("Erro ao deletar mensagens:", error);
-                    return await interaction.editReply({
+                    await interaction.editReply({
                         content: "❌ Erro ao deletar as mensagens. Verifique se elas têm menos de 14 dias.",
                     });
+                    return;
                 }
             }
 
-            return await interaction.editReply({
+            await interaction.editReply({
                 content: "❌ Não é possível deletar mensagens neste tipo de canal!",
             });
         } catch (error) {
@@ -126,17 +132,17 @@ export class RemoveMessagesCommand implements Command {
             // Tentar responder com uma mensagem de erro genérica
             try {
                 if (interaction.deferred) {
-                    return await interaction.editReply({
+                    await interaction.editReply({
                         content: "❌ Ocorreu um erro ao executar o comando. Tente novamente.",
                     });
                 } else {
-                    return await interaction.editReply({
+                    await interaction.editReply({
                         content: "❌ Ocorreu um erro ao executar o comando. Tente novamente.",
                     });
                 }
             } catch (e) {
                 console.error("Erro ao enviar mensagem de erro:", e);
-                return await interaction.editReply({
+                await interaction.editReply({
                     content: "❌ Erro crítico ao executar o comando.",
                 });
             }

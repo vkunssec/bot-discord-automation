@@ -19,10 +19,11 @@ export class RegisterCommands implements Command {
     /**
      * Execução do Comando
      */
-    async execute(context: Message): Promise<any> {
+    async execute(context: Message): Promise<void> {
         // Verifica se o usuário tem permissão de administrador
         if (!context.member?.permissions.has("Administrator")) {
-            return await context.reply("Você não tem permissão para usar este comando!");
+            await context.reply("Você não tem permissão para usar este comando!");
+            return;
         }
 
         // Obtém os comandos registrados

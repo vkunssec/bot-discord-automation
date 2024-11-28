@@ -111,11 +111,6 @@ export class DryscordApplication {
      * - Receber os eventos de input
      */
     public addClientEventHandlers() {
-        // Registro dos comandos ao entrar em um servidor
-        this.client.on(Events.GuildCreate, async (guild: Guild) => {
-            this.registerSlashCommands({ guildId: guild.id });
-        });
-
         // Receber os eventos de input
         this.client.on(Events.InteractionCreate, (interaction) => {
             this.interactionHandler.handleInteraction(interaction as ChatInputCommandInteraction);

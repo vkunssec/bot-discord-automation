@@ -42,14 +42,15 @@ export class RegisterBirthdateCommand implements Command {
      * @param interaction - Interação do usuário
      * @returns - Retorno da interação
      */
-    async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<any> {
+    async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
         await interaction.deferReply({ ephemeral: true });
 
         const day = interaction.options.getNumber("dia");
         const month = interaction.options.getNumber("mês");
 
         if (day! > 31 || day! < 1 || month! > 12 || month! < 1) {
-            return await interaction.editReply({ content: "Por favor, informe um dia e mês válidos!" });
+            await interaction.editReply({ content: "Por favor, informe um dia e mês válidos!" });
+            return;
         }
 
         const data: UserBirthday = {
@@ -69,12 +70,12 @@ export class RegisterBirthdateCommand implements Command {
                 channel: interaction.channel as TextChannel,
             });
 
-            return await interaction.editReply({
+            await interaction.editReply({
                 content: "Data de aniversário registrada com sucesso! 🎂",
             });
         } catch (error) {
             console.error("Erro ao registrar aniversário:", error);
-            return await interaction.editReply({
+            await interaction.editReply({
                 content: "Desculpe, ocorreu um erro ao registrar seu aniversário. Tente novamente mais tarde.",
             });
         }

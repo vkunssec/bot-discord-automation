@@ -61,16 +61,17 @@ export class EmbeddingCommand implements Command {
      * @param interaction - Interação do usuário
      * @returns - Retorno da interação
      */
-    async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean> | Message<boolean>> {
+    async execute(interaction: ChatInputCommandInteraction): Promise<void> {
         await interaction.deferReply({ ephemeral: false, fetchReply: true });
 
         const { member, options, channel } = interaction;
 
         // Verificar se o usuário tem permissão para deletar mensagens
         if (!(member as GuildMember).permissions.has("ManageMessages")) {
-            return await interaction.editReply({
+            await interaction.editReply({
                 content: "❌ Você não tem permissão para usar este comando!",
             });
+            return;
         }
 
         const title = options.getString("title");
@@ -155,6 +156,6 @@ export class EmbeddingCommand implements Command {
             channel: interaction.channel as TextChannel,
         });
 
-        return await interaction.editReply({ embeds: [embed] });
+        await interaction.editReply({ embeds: [embed] });
     }
 }
