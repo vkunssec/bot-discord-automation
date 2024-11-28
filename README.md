@@ -133,6 +133,8 @@ Principais dependências do projeto em produção
 Demais dependências para desenvolvimento
 
 -   [tsx](https://www.npmjs.com/package/tsx)
+-   [tsc-alias](https://www.npmjs.com/package/tsc-alias)
+-   [module-alias](https://www.npmjs.com/package/module-alias)
 -   [typescript](https://www.npmjs.com/package/typescript)
 -   [prettier](https://www.npmjs.com/package/prettier)
 -   [prettier-plugin-organize-imports](https://www.npmjs.com/package/prettier-plugin-organize-imports)
