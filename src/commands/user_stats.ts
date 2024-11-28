@@ -31,7 +31,7 @@ export class UserStatsCommand implements Command {
      * @param interaction - Interação do usuário
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply();
 
         const targetUser = interaction.options.getUser("usuario") || interaction.user;
         const guildId = interaction.guildId!;

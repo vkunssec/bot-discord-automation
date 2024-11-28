@@ -62,7 +62,7 @@ export class EmbeddingCommand implements Command {
      * @returns - Retorno da interação
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean> | Message<boolean>> {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply();
 
         const { member, options, channel } = interaction;
 
