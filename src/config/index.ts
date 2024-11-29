@@ -12,7 +12,7 @@ export const DISCORD_ACCESS_TOKEN = process.env.DISCORD_ACCESS_TOKEN ?? "invalid
 
 export const CLIENT_ID = process.env.CLIENT_ID ?? "invalid_clientId";
 
-export const CHANNEL_LOGS = process.env.CHANNEL_LOGS ?? "logs";
+export const CHANNEL_LOGS = process.env.CHANNEL_LOGS ?? "invalid_channel_logs";
 
 export const CHANNEL_WELCOME = process.env.CHANNEL_WELCOME ?? "invalid_channel_welcome";
 

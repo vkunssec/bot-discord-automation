@@ -18,10 +18,10 @@ export class Logs {
     ) {
         try {
             // Verifica se o canal é o de logs, para não criar log de log
-            if (channel.name === CHANNEL_LOGS) return;
+            if (channel.id === CHANNEL_LOGS) return;
 
             const logChannel = interaction.guild?.channels.cache.find(
-                (channel) => channel.name === CHANNEL_LOGS
+                (channel) => channel.id === CHANNEL_LOGS
             ) as TextChannel;
             if (!logChannel) return;
 
@@ -57,15 +57,15 @@ export class Logs {
     /**
      * Cria um log de informações genéricas
      *
-     * @param data - Dados do log
+     * @param {LogData} data - Dados do log
      */
     static async GenericInfoLog(data: LogData) {
         try {
             // Verifica se o canal é o de logs, para não criar log de log
-            if (data.channel.name === CHANNEL_LOGS) return;
+            if (data.channel.id === CHANNEL_LOGS) return;
 
             const logChannel = data.interaction.guild?.channels.cache.find(
-                (channel) => channel.name === CHANNEL_LOGS
+                (channel) => channel.id === CHANNEL_LOGS
             ) as TextChannel;
             if (!logChannel) return;
 
