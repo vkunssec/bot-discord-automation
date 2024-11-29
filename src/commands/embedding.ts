@@ -30,6 +30,9 @@ export class EmbeddingCommand implements Command {
         .addStringOption((option) =>
             option.setName("description").setDescription("Descrição principal").setRequired(true)
         )
+        .addChannelOption((option) =>
+            option.setName("channel").setDescription("Canal onde o incorporador será enviado").setRequired(false)
+        )
         .addStringOption((option) =>
             option.setName("subtitle").setDescription("Subtítulo do incorporador").setRequired(false)
         )
@@ -60,7 +63,7 @@ export class EmbeddingCommand implements Command {
      * @returns - Retorno da interação
      */
     async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-        await interaction.deferReply({ ephemeral: false, fetchReply: true });
+        await interaction.deferReply({ ephemeral: true, fetchReply: true });
 
         const { member, options, channel } = interaction;
 
@@ -74,6 +77,7 @@ export class EmbeddingCommand implements Command {
 
         const title = options.getString("title");
         const subtitle = options.getString("subtitle");
+        const channelOption = (options.getChannel("channel") || channel) as TextChannel;
         const description = options.getString("description");
         const footer = options.getString("footer");
         const banner = options.getAttachment("banner");
@@ -96,19 +100,19 @@ export class EmbeddingCommand implements Command {
             embed.setAuthor({ name: subtitle });
         }
 
-        // Configuração da Imagem do Banner
-        if (banner) {
-            embed.setImage(banner.url);
-        }
-
         // Configuração da Imagem Principal
         if (mainImage) {
+            embed.setImage(mainImage.url);
+        }
+
+        // Configuração da Imagem do Banner
+        if (banner) {
             embed
                 .addFields({
                     name: "\u200B",
                     value: "\u200B",
                 })
-                .setThumbnail(mainImage.url);
+                .setThumbnail(banner.url);
         }
 
         // Configuração da Imagem Secundária
@@ -151,9 +155,22 @@ export class EmbeddingCommand implements Command {
             interaction: interaction,
             command: this.name,
             description: this.description,
-            channel: interaction.channel as TextChannel,
+            channel: channelOption,
         });
 
-        await interaction.editReply({ embeds: [embed] });
+        try {
+            // Envia o embed para o canal especificado
+            await channelOption.send({ embeds: [embed] });
+
+            // Confirma o envio para o usuário
+            await interaction.editReply({
+                content: `✅ Embed enviado com sucesso para o canal ${channelOption}!`,
+            });
+        } catch (error) {
+            console.error("Erro ao enviar embed:", error);
+            await interaction.editReply({
+                content: "❌ Não foi possível enviar o embed para o canal especificado. Verifique as permissões.",
+            });
+        }
     }
 }
