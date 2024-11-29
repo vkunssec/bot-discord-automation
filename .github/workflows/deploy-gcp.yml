@@ -38,6 +38,7 @@ jobs:
               uses: dorny/paths-filter@v2
               id: changes
               with:
+                  base: ${{ github.ref == 'refs/heads/main' && 'HEAD~1' || 'origin/develop' }}
                   filters: |
                       src:
                         - 'src/**'
@@ -105,6 +106,7 @@ jobs:
               uses: dorny/paths-filter@v2
               id: changes
               with:
+                  base: ${{ github.ref == 'refs/heads/main' && 'HEAD~1' || 'origin/develop' }}
                   filters: |
                       src:
                         - 'src/**'
