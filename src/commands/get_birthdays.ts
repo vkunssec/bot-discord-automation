@@ -40,7 +40,7 @@ export class GetBirthdaysCommand implements Command {
         await interaction.deferReply({ ephemeral: false, fetchReply: true });
 
         // Obtém o mês selecionado pelo usuário ou o mês atual
-        const month = interaction.options.getNumber("mês") || new Date().getMonth() + 1;
+        const month = (interaction.options.getNumber("mês") as number) - 1 || new Date().getMonth();
         // Formata o mês em português brasileiro
         const formattedMonth = new Date(Date.UTC(new Date().getUTCFullYear(), month, 1)).toLocaleDateString("pt-BR", {
             month: "long",
