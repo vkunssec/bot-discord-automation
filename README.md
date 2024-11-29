@@ -1,7 +1,8 @@
 # Bot Dryscord
 
-[![workflow](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml)
+[![Docs](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml)
 [![Deploy GCP](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/deploy-gcp.yml/badge.svg)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/deploy-gcp.yml)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 ## Estrutura do Projeto
 
