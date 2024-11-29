@@ -30,9 +30,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
               with:
-                fetch-depth: 0
-                persist-credentials: true
-                token: ${{ secrets.GITHUB_TOKEN }}
+                  fetch-depth: 0
+                  persist-credentials: true
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
             # Verificar mudanças no código fonte
             - name: Check for source code changes
@@ -50,25 +50,27 @@ jobs:
             - name: Skip deployment
               if: steps.changes.outputs.src != 'true'
               run: |
-                echo "No changes detected in source code. Skipping deployment."
-                exit 0
+                  echo "No changes detected in source code. Skipping deployment."
 
             # Login to GCP
             - uses: google-github-actions/setup-gcloud@v0.2.0
+              if: steps.changes.outputs.src == 'true'
               with:
                   service_account_key: ${{ secrets.GCP_CREDENTIALS }}
                   project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-            # gcloud configure docker
             - name: Configure Docker
+              if: steps.changes.outputs.src == 'true'
               run: gcloud auth configure-docker --quiet
 
             - name: Build and Push Docker image
+              if: steps.changes.outputs.src == 'true'
               run: |
                   docker build -t $IMAGE_NAME .
                   docker push $IMAGE_NAME
 
             - name: Deploy to Cloud Run
+              if: steps.changes.outputs.src == 'true'
               run: |
                   gcloud run deploy bot-dryscord-dev \
                     --image $IMAGE_NAME \
@@ -103,9 +105,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v4
               with:
-                fetch-depth: 0
-                persist-credentials: true
-                token: ${{ secrets.GITHUB_TOKEN }}
+                  fetch-depth: 0
+                  persist-credentials: true
+                  token: ${{ secrets.GITHUB_TOKEN }}
 
             # Verificar mudanças no código fonte
             - name: Check for source code changes
@@ -123,25 +125,27 @@ jobs:
             - name: Skip deployment
               if: steps.changes.outputs.src != 'true'
               run: |
-                echo "No changes detected in source code. Skipping deployment."
-                exit 0
+                  echo "No changes detected in source code. Skipping deployment."
 
             # Login to GCP
             - uses: google-github-actions/setup-gcloud@v0.2.0
+              if: steps.changes.outputs.src == 'true'
               with:
                   service_account_key: ${{ secrets.GCP_CREDENTIALS }}
                   project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-            # gcloud configure docker
             - name: Configure Docker
+              if: steps.changes.outputs.src == 'true'
               run: gcloud auth configure-docker --quiet
 
             - name: Build and Push Docker image
+              if: steps.changes.outputs.src == 'true'
               run: |
                   docker build -t $IMAGE_NAME .
                   docker push $IMAGE_NAME
 
             - name: Deploy to Cloud Run
+              if: steps.changes.outputs.src == 'true'
               run: |
                   gcloud run deploy bot-dryscord \
                     --image $IMAGE_NAME \
