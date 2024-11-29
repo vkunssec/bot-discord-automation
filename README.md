@@ -1,6 +1,7 @@
 # Bot Dryscord
 
-![workflow](https://github.com/vkunssec/Bot-Dryscord/workflows/workflow/badge.svg)
+[![workflow](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml/badge.svg)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml)
+[![Deploy GCP](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/deploy-gcp.yml/badge.svg)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/deploy-gcp.yml)
 
 ## Estrutura do Projeto
 
@@ -67,6 +68,9 @@ Variáveis de Ambiente do projeto, ex.: [.env.example](.env.example)
 # Ambiente
 STAGE=<development | staging | production>
 
+# Porta
+PORT=8080
+
 # Discord
 DISCORD_ACCESS_TOKEN=<discord_token>
 CLIENT_ID=<application_id>
@@ -122,10 +126,15 @@ Principais dependências do projeto em produção
 -   [discord.js](https://www.npmjs.com/package/discord.js)
 -   [mongodb](https://www.npmjs.com/package/mongodb)
 -   [node-cron](https://www.npmjs.com/package/node-cron)
+-   [express](https://www.npmjs.com/package/express)
+-   [cors](https://www.npmjs.com/package/cors)
+-   [helmet](https://www.npmjs.com/package/helmet)
+-   [http-status-codes](https://www.npmjs.com/package/http-status-codes)
 
 Demais dependências para desenvolvimento
 
 -   [tsx](https://www.npmjs.com/package/tsx)
+-   [tsc-alias](https://www.npmjs.com/package/tsc-alias)
 -   [typescript](https://www.npmjs.com/package/typescript)
 -   [prettier](https://www.npmjs.com/package/prettier)
 -   [prettier-plugin-organize-imports](https://www.npmjs.com/package/prettier-plugin-organize-imports)

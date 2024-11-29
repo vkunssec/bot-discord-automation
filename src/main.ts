@@ -10,11 +10,10 @@ import {
     Routes,
 } from "discord.js";
 
-import { RegisterCommands } from "./commands/register_commands";
-import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "./config";
-import { InteractionHandler } from "./controller/Interaction";
-import { MongoDB } from "./core/database/mongodb";
-import { DeployCommandsProps } from "./core/model/commandsProps";
+import { RegisterCommands } from "@/commands";
+import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "@/config";
+import { InteractionHandler } from "@/controller/Interaction";
+import { DeployCommandsProps } from "@/core/model/commandsProps";
 
 /**
  * Classe DryscordApplication
@@ -74,15 +73,15 @@ export class DryscordApplication {
      * Método de inicio do serviço
      * Necessário TOKEN de acesso para validação
      */
-    public start() {
-        this.client
-            .login(DISCORD_ACCESS_TOKEN)
-            .then(() => {
-                // Em caso de sucesso no login a partir do Token de acesso,
-                // inicia os Event Listeners
-                this.addClientEventHandlers();
-            })
-            .catch((err) => console.error("Error starting bot", err));
+    public async start() {
+        try {
+            await this.client.login(DISCORD_ACCESS_TOKEN);
+            // Em caso de sucesso no login a partir do Token de acesso,
+            // inicia os Event Listeners
+            this.addClientEventHandlers();
+        } catch (error) {
+            console.error("Error starting bot", error);
+        }
     }
 
     /**
@@ -112,11 +111,6 @@ export class DryscordApplication {
      * - Receber os eventos de input
      */
     public addClientEventHandlers() {
-        // Registro dos comandos ao entrar em um servidor
-        this.client.on(Events.GuildCreate, async (guild: Guild) => {
-            this.registerSlashCommands({ guildId: guild.id });
-        });
-
         // Receber os eventos de input
         this.client.on(Events.InteractionCreate, (interaction) => {
             this.interactionHandler.handleInteraction(interaction as ChatInputCommandInteraction);
@@ -137,7 +131,7 @@ export class DryscordApplication {
         });
 
         // Levantar o serviço do bot
-        this.client.on(Events.ClientReady, async () => {
+        this.client.on(Events.ClientReady, () => {
             console.log("Dryscord Bot is Ready! 🤖");
 
             // https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types
@@ -150,15 +144,6 @@ export class DryscordApplication {
                 ],
             });
 
-            /**
-             * Conectar ao banco de dados MongoDB
-             * Necessário para que alguns comandos funcionem
-             * Abrindo a conexão quando a aplicação é levantada para
-             * Aproveitar uma mesma conexão em toda aplicação
-             * Diminuindo a quantidade de conexões ao banco de dados
-             */
-            await MongoDB.getInstance().connect();
-
             // Iniciar o serviço de verificação de aniversários
             // Executa todos os dias as 00:00
             this.interactionHandler.handleBirthday();
@@ -170,7 +155,7 @@ export class DryscordApplication {
             // essa funcionalidade está desativada para evitar sobrecarga no Servidor do Discord
             // porque existe um limite atualização de comandos por dia
             this.client.guilds.cache.forEach((guild: Guild) => {
-                this.registerSlashCommands({ guildId: guild.id });
+                // this.registerSlashCommands({ guildId: guild.id });
             });
         });
 
@@ -183,5 +168,47 @@ export class DryscordApplication {
         this.client.on(Events.GuildMemberAdd, async () => {
             this.interactionHandler.handleMemberAdd();
         });
+    }
+
+    /**
+     * Verifica se o bot está pronto para uso
+     *
+     * @returns {boolean} - Retorna true se o bot está pronto para uso
+     */
+    public isReady(): boolean {
+        return this.client?.isReady() ?? false;
+    }
+
+    /**
+     * Retorna o tempo de atividade do bot em formato legível
+     *
+     * @returns {string} - Retorna o tempo de atividade do bot em formato legível
+     */
+    public getUptime(): string {
+        const uptime = this.client?.uptime ?? 0;
+        const seconds = Math.floor(uptime / 1000);
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const days = Math.floor(hours / 24);
+
+        return `${days}d ${hours % 24}h ${minutes % 60}m ${seconds % 60}s`;
+    }
+
+    /**
+     * Retorna o número de servidores em que o bot está presente
+     *
+     * @returns {number} - Retorna o número de servidores em que o bot está presente
+     */
+    public getGuildsCount(): number {
+        return this.client?.guilds.cache.size ?? 0;
+    }
+
+    /**
+     * Retorna a latência do WebSocket do bot
+     *
+     * @returns {number} - Retorna a latência do WebSocket do bot
+     */
+    public getPing(): number {
+        return this.client?.ws.ping ?? 0;
     }
 }

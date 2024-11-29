@@ -1,10 +1,21 @@
-import { ApplicationCommandType, CacheType, ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import {
+    ApplicationCommandType,
+    CacheType,
+    ChatInputCommandInteraction,
+    SlashCommandBuilder,
+    TextChannel,
+} from "discord.js";
 
-import { insertBirthdate } from "../core/database/birthdate/insert";
-import { Command } from "../core/interface/command";
+import { Logs } from "@/controller/Logs";
+import { insertBirthdate } from "@/core/database/birthdate/insert";
+import { Command } from "@/core/interface/command";
+import { UserBirthday } from "@/core/interface/user_birthday";
 
 /**
  * Comando para registrar a data de aniversário do usuário
+ *
+ * @class RegisterBirthdateCommand
+ * @implements Command
  */
 export class RegisterBirthdateCommand implements Command {
     name = "register_birthdate";
@@ -31,24 +42,41 @@ export class RegisterBirthdateCommand implements Command {
      * @param interaction - Interação do usuário
      * @returns - Retorno da interação
      */
-    async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<any> {
+    async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
+        await interaction.deferReply({ ephemeral: true });
+
         const day = interaction.options.getNumber("dia");
         const month = interaction.options.getNumber("mês");
 
         if (day! > 31 || day! < 1 || month! > 12 || month! < 1) {
-            return interaction.reply({ content: "Por favor, informe um dia e mês válidos!", ephemeral: true });
+            await interaction.editReply({ content: "Por favor, informe um dia e mês válidos!" });
+            return;
         }
+
+        const data: UserBirthday = {
+            userId: interaction.user.id,
+            day: day!,
+            month: month!,
+        };
 
         try {
             // Registra a data de aniversário do usuário no banco de dados MongoDB
-            await insertBirthdate(interaction.user, day!, month!);
+            await insertBirthdate(data);
 
-            return interaction.reply({ content: "Data de aniversário registrada com sucesso! 🎂", ephemeral: true });
+            Logs.GenericInfoLog({
+                interaction: interaction,
+                command: this.name,
+                description: this.description,
+                channel: interaction.channel as TextChannel,
+            });
+
+            await interaction.editReply({
+                content: "Data de aniversário registrada com sucesso! 🎂",
+            });
         } catch (error) {
             console.error("Erro ao registrar aniversário:", error);
-            return interaction.reply({
+            await interaction.editReply({
                 content: "Desculpe, ocorreu um erro ao registrar seu aniversário. Tente novamente mais tarde.",
-                ephemeral: true,
             });
         }
     }

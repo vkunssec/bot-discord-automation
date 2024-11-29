@@ -1,10 +1,17 @@
 import { ChatInputCommandInteraction, Client } from "discord.js";
-import { BirthdayAutomation } from "../automation/get_birthdays";
-import { UserInteractionTracker } from "../automation/user_interactions";
-import { WelcomeMessage } from "../automation/welcome_message";
-import { EmbeddingCommand, PingCommand, RemoveMessagesCommand, UserStatsCommand } from "../commands";
-import { RegisterBirthdateCommand } from "../commands/register_birthdate";
-import { Command } from "../core/interface/command";
+
+import { BirthdayAutomation } from "@/automation/get_birthdays";
+import { UserInteractionTracker } from "@/automation/user_interactions";
+import { WelcomeMessage } from "@/automation/welcome_message";
+import {
+    EmbeddingCommand,
+    GetBirthdaysCommand,
+    PingCommand,
+    RemoveMessagesCommand,
+    UserStatsCommand,
+} from "@/commands";
+import { RegisterBirthdateCommand } from "@/commands/register_birthdate";
+import { Command } from "@/core/interface/command";
 
 /**
  * Handler para controlar as Interações
@@ -24,12 +31,18 @@ export class InteractionHandler {
             new PingCommand(),
             new RemoveMessagesCommand(),
             new RegisterBirthdateCommand(),
+            new GetBirthdaysCommand(),
             new UserStatsCommand(),
         ];
 
         this.client = client;
     }
 
+    /**
+     * Retorna os comandos em formato JSON
+     *
+     * @returns
+     */
     public getSlashCommands() {
         return this.commands.map((command: Command) => command.slashCommandConfig?.toJSON());
     }
@@ -56,26 +69,25 @@ export class InteractionHandler {
             return Promise.reject("Command not matched");
         }
 
-        matchedCommand
-            .execute(interaction)
-            .then(() => {
-                console.log(`Successfully executed command [/${interaction.commandName}]`, {
-                    guild: {
-                        id: interaction.guildId,
-                        name: interaction.guild?.name,
-                    },
-                    user: { name: interaction.user.globalName },
-                });
-            })
-            .catch((err) =>
-                console.log(`Error executing command [/${interaction.commandName}]: ${err}`, {
-                    guild: {
-                        id: interaction.guildId,
-                        name: interaction.guild?.name,
-                    },
-                    user: { name: interaction.user.globalName },
-                })
-            );
+        try {
+            await matchedCommand.execute(interaction);
+            console.log(`Successfully executed command [/${interaction.commandName}]`, {
+                guild: {
+                    id: interaction.guildId,
+                    name: interaction.guild?.name,
+                },
+                user: { name: interaction.user.globalName },
+            });
+        } catch (error) {
+            console.error(error);
+            console.log(`Error executing command [/${interaction.commandName}]: ${error}`, {
+                guild: {
+                    id: interaction.guildId,
+                    name: interaction.guild?.name,
+                },
+                user: { name: interaction.user.globalName },
+            });
+        }
     }
 
     /**

@@ -1,7 +1,9 @@
 import { Client, TextChannel } from "discord.js";
 import cron from "node-cron";
-import { CHANNEL_BIRTHDAY } from "../config";
-import { getBirthdays } from "../core/database/birthdate/get";
+
+import { CHANNEL_BIRTHDAY } from "@/config";
+import { getBirthdays } from "@/core/database/birthdate/get";
+import { UserBirthday } from "@/core/interface/user_birthday";
 
 /**
  * Classe responsável pela automação de aniversários
@@ -35,7 +37,7 @@ export class BirthdayAutomation {
             if (!birthdays.length) return;
 
             const channel = await this.getChannel();
-            await this.sendBirthdayMessages(channel, birthdays);
+            await this.sendBirthdayMessages(channel, birthdays as UserBirthday[]);
         } catch (error) {
             console.error("[BirthdayAutomation] Erro ao verificar aniversários:", error);
         }
@@ -51,11 +53,11 @@ export class BirthdayAutomation {
     /**
      * Envia as mensagens de aniversário
      */
-    private async sendBirthdayMessages(channel: TextChannel, birthdays: any[]): Promise<void> {
+    private async sendBirthdayMessages(channel: TextChannel, birthdays: UserBirthday[]): Promise<void> {
         const promises = [];
         for (const birthday of birthdays) {
             try {
-                const user = await this.client.users.fetch(birthday.user.id);
+                const user = await this.client.users.fetch(birthday.userId);
                 const message = channel.send(
                     [
                         `🎉 **Feliz Aniversário** ${user}! 🎂`,

@@ -3,13 +3,18 @@ import {
     ColorResolvable,
     EmbedBuilder,
     GuildMember,
-    InteractionResponse,
     SlashCommandBuilder,
+    TextChannel,
 } from "discord.js";
-import { Command } from "../core/interface/command";
+
+import { Logs } from "@/controller/Logs";
+import { Command } from "@/core/interface/command";
 
 /**
  * Comando para criar um incorporador de mensagens personalizado
+ *
+ * @class EmbeddingCommand
+ * @implements Command
  */
 export class EmbeddingCommand implements Command {
     name = "embed";
@@ -24,6 +29,9 @@ export class EmbeddingCommand implements Command {
         )
         .addStringOption((option) =>
             option.setName("description").setDescription("Descrição principal").setRequired(true)
+        )
+        .addChannelOption((option) =>
+            option.setName("channel").setDescription("Canal onde o incorporador será enviado").setRequired(false)
         )
         .addStringOption((option) =>
             option.setName("subtitle").setDescription("Subtítulo do incorporador").setRequired(false)
@@ -54,19 +62,22 @@ export class EmbeddingCommand implements Command {
      * @param interaction - Interação do usuário
      * @returns - Retorno da interação
      */
-    async execute(interaction: ChatInputCommandInteraction): Promise<InteractionResponse<boolean>> {
+    async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+        await interaction.deferReply({ ephemeral: true, fetchReply: true });
+
         const { member, options, channel } = interaction;
 
         // Verificar se o usuário tem permissão para deletar mensagens
         if (!(member as GuildMember).permissions.has("ManageMessages")) {
-            return await interaction.reply({
+            await interaction.editReply({
                 content: "❌ Você não tem permissão para usar este comando!",
-                ephemeral: true,
             });
+            return;
         }
 
         const title = options.getString("title");
         const subtitle = options.getString("subtitle");
+        const channelOption = (options.getChannel("channel") || channel) as TextChannel;
         const description = options.getString("description");
         const footer = options.getString("footer");
         const banner = options.getAttachment("banner");
@@ -89,19 +100,19 @@ export class EmbeddingCommand implements Command {
             embed.setAuthor({ name: subtitle });
         }
 
-        // Configuração da Imagem do Banner
-        if (banner) {
-            embed.setImage(banner.url);
-        }
-
         // Configuração da Imagem Principal
         if (mainImage) {
+            embed.setImage(mainImage.url);
+        }
+
+        // Configuração da Imagem do Banner
+        if (banner) {
             embed
                 .addFields({
                     name: "\u200B",
                     value: "\u200B",
                 })
-                .setThumbnail(mainImage.url);
+                .setThumbnail(banner.url);
         }
 
         // Configuração da Imagem Secundária
@@ -140,6 +151,26 @@ export class EmbeddingCommand implements Command {
             }
         }
 
-        return await interaction.reply({ embeds: [embed] });
+        Logs.GenericInfoLog({
+            interaction: interaction,
+            command: this.name,
+            description: this.description,
+            channel: channelOption,
+        });
+
+        try {
+            // Envia o embed para o canal especificado
+            await channelOption.send({ embeds: [embed] });
+
+            // Confirma o envio para o usuário
+            await interaction.editReply({
+                content: `✅ Embed enviado com sucesso para o canal ${channelOption}!`,
+            });
+        } catch (error) {
+            console.error("Erro ao enviar embed:", error);
+            await interaction.editReply({
+                content: "❌ Não foi possível enviar o embed para o canal especificado. Verifique as permissões.",
+            });
+        }
     }
 }

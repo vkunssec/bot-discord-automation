@@ -1,11 +1,15 @@
 import { Message, REST, Routes, TextChannel } from "discord.js";
-import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "../config";
-import { InteractionHandler } from "../controller/Interaction";
-import { Logs } from "../controller/Logs";
-import { Command } from "../core/interface/command";
+
+import { CLIENT_ID, DISCORD_ACCESS_TOKEN } from "@/config";
+import { InteractionHandler } from "@/controller/Interaction";
+import { Logs } from "@/controller/Logs";
+import { Command } from "@/core/interface/command";
 
 /**
  * Comando para registrar os comandos do bot
+ *
+ * @class RegisterCommands
+ * @implements Command
  */
 export class RegisterCommands implements Command {
     name = "register";
@@ -15,14 +19,15 @@ export class RegisterCommands implements Command {
     /**
      * Execução do Comando
      */
-    async execute(context: Message): Promise<any> {
+    async execute(context: Message): Promise<void> {
         // Verifica se o usuário tem permissão de administrador
         if (!context.member?.permissions.has("Administrator")) {
-            return context.reply("Você não tem permissão para usar este comando!");
+            await context.reply("Você não tem permissão para usar este comando!");
+            return;
         }
 
         // Obtém os comandos registrados
-        const commands = new InteractionHandler().getSlashCommands();
+        const commands = new InteractionHandler(context.client).getSlashCommands();
 
         try {
             console.log(`Registering commands for guild: ${context.guild!.id}`);

@@ -6,12 +6,15 @@ import {
     TextChannel,
 } from "discord.js";
 
-import { Logs } from "../controller/Logs";
-import { Command } from "../core/interface/command";
+import { Logs } from "@/controller/Logs";
+import { Command } from "@/core/interface/command";
 
 /**
  * Criação básica de um Comando
  * A partir da interface Command, se define o Nome, Descrição e o Construtor do comando
+ *
+ * @class PingCommand
+ * @implements Command
  */
 export class PingCommand implements Command {
     name = "ping";
@@ -27,7 +30,9 @@ export class PingCommand implements Command {
      * - https://discord.js.org/docs/packages/discord.js/14.15.3/ChatInputCommandInteraction:Class#reply
      * - https://discord.js.org/docs/packages/discord.js/14.15.3/InteractionReplyOptions:Interface
      */
-    async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<any> {
+    async execute(interaction: ChatInputCommandInteraction<CacheType>): Promise<void> {
+        await interaction.deferReply({ ephemeral: true });
+
         Logs.GenericInfoLog({
             interaction: interaction,
             command: this.name,
@@ -35,6 +40,6 @@ export class PingCommand implements Command {
             channel: interaction.channel as TextChannel,
         });
 
-        return interaction.reply(`Pong! (≧∇≦)ﾉ`);
+        await interaction.editReply(`Pong! (≧∇≦)ﾉ`);
     }
 }

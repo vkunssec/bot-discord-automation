@@ -16,6 +16,11 @@
  *  - Bônus de 15% por hora completa
  *  - Exemplo: 90 minutos = 310.5 pontos (270 base + 15% de bônus)
  *
+ * **Anexos:**
+ *  - 1.5 pontos base por anexo
+ *  - Bônus de 5% a cada 100 anexos
+ *  - Exemplo: 250 anexos = 393.75 pontos (375 base + 5% de bônus)
+ *
  * **Sistema de Níveis:**
  *  - Usa raiz quadrada para criar uma progressão mais equilibrada
  *  - Nível 1: 0-99 pontos
@@ -32,8 +37,14 @@
  */
 export class Points {
     private static readonly BASE_REACTION_PTS = 1;
+    private static readonly BASE_ATTACHMENT_PTS = 1.5;
     private static readonly BASE_MESSAGE_PTS = 2;
     private static readonly BASE_VOICE_PTS = 3;
+
+    private static readonly REACTION_BONUS_PER_100 = 0.05;
+    private static readonly ATTACHMENT_BONUS_PER_100 = 0.05;
+    private static readonly MESSAGE_BONUS_PER_100 = 0.1;
+    private static readonly VOICE_BONUS_PER_HOUR = 0.15;
 
     /**
      * Cada mensagem vale 2 pontos base
@@ -45,7 +56,7 @@ export class Points {
      */
     public static calcPointsMessages(quantity: number): number {
         const base = Points.BASE_MESSAGE_PTS;
-        const bonus = Math.floor(quantity / 100) * 0.1;
+        const bonus = Math.floor(quantity / 100) * Points.MESSAGE_BONUS_PER_100;
         return Math.floor(quantity * base * (1 + bonus));
     }
 
@@ -59,7 +70,7 @@ export class Points {
      */
     public static calcPointsReactions(quantity: number): number {
         const base = Points.BASE_REACTION_PTS;
-        const bonus = Math.floor(quantity / 50) * 0.05;
+        const bonus = Math.floor(quantity / 50) * Points.REACTION_BONUS_PER_100;
         return Math.floor(quantity * base * (1 + bonus));
     }
 
@@ -74,8 +85,22 @@ export class Points {
     public static calcPointsVoice(minutes: number): number {
         const base = Points.BASE_VOICE_PTS;
         const hours = Math.floor(minutes / 60);
-        const bonus = hours * 0.15;
+        const bonus = hours * Points.VOICE_BONUS_PER_HOUR;
         return Math.floor(minutes * base * (1 + bonus));
+    }
+
+    /**
+     * Cada anexo vale 1.5 pontos base
+     *
+     * A cada 100 anexos, ganha 5% de bônus
+     *
+     * @param quantity - Quantidade de anexos
+     * @returns Pontos de anexos
+     */
+    public static calcPointsAttachment(quantity: number): number {
+        const base = Points.BASE_ATTACHMENT_PTS;
+        const bonus = Math.floor(quantity / 100) * Points.ATTACHMENT_BONUS_PER_100;
+        return Math.floor(quantity * base * (1 + bonus));
     }
 
     /**

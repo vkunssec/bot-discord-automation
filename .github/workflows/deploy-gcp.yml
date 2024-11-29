@@ -1,0 +1,152 @@
+name: Deploy GCP
+
+on:
+    push:
+        branches: [main, develop]
+
+env:
+    STAGE: ${{ vars.STAGE }}
+    DISCORD_ACCESS_TOKEN: ${{ vars.DISCORD_ACCESS_TOKEN }}
+    CLIENT_ID: ${{ vars.CLIENT_ID }}
+    CHANNEL_LOGS: ${{ vars.CHANNEL_LOGS }}
+    CHANNEL_WELCOME: ${{ vars.CHANNEL_WELCOME }}
+    CHANNEL_BIRTHDAY: ${{ vars.CHANNEL_BIRTHDAY }}
+    ROLE_DEFAULT: ${{ vars.ROLE_DEFAULT }}
+    MONGODB_URI: ${{ vars.MONGODB_URI }}
+    MONGODB_DATABASE: ${{ vars.MONGODB_DATABASE }}
+    MONGODB_COLLECTION_BIRTHDATE: ${{ vars.MONGODB_COLLECTION_BIRTHDATE }}
+    MONGODB_COLLECTION_USER_INTERACTIONS: ${{ vars.MONGODB_COLLECTION_USER_INTERACTIONS }}
+
+jobs:
+    deploy-development:
+        name: Deploy to Development
+        if: github.ref == 'refs/heads/develop'
+        runs-on: ubuntu-latest
+        environment: dev
+        env:
+            IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bot-dryscord-dev:latest
+        steps:
+            # Checkout do Git atualizado
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                persist-credentials: false
+
+            # Verificar mudanças no código fonte
+            - name: Check for source code changes
+              uses: dorny/paths-filter@v2
+              id: changes
+              with:
+                  filters: |
+                      src:
+                        - 'src/**'
+                        - 'package.json'
+                        - 'package-lock.json'
+                        - 'Dockerfile'
+
+            # Login to GCP
+            - uses: google-github-actions/setup-gcloud@v0.2.0
+              with:
+                  service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+                  project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+            # gcloud configure docker
+            - name: Configure Docker
+              run: gcloud auth configure-docker --quiet
+
+            - name: Build and Push Docker image
+              if: steps.changes.outputs.src == 'true'
+              run: |
+                  docker build -t $IMAGE_NAME .
+                  docker push $IMAGE_NAME
+
+            - name: Deploy to Cloud Run
+              if: steps.changes.outputs.src == 'true'
+              run: |
+                  gcloud run deploy bot-dryscord-dev \
+                    --image $IMAGE_NAME \
+                    --region us-central1 \
+                    --allow-unauthenticated \
+                    --memory 512Mi \
+                    --min-instances 1 \
+                    --max-instances 2 \
+                    --cpu 1 \
+                    --platform managed \
+                    --set-env-vars "STAGE=$STAGE,\
+                    DISCORD_ACCESS_TOKEN=$DISCORD_ACCESS_TOKEN,\
+                    CLIENT_ID=$CLIENT_ID,\
+                    CHANNEL_LOGS=$CHANNEL_LOGS,\
+                    CHANNEL_WELCOME=$CHANNEL_WELCOME,\
+                    CHANNEL_BIRTHDAY=$CHANNEL_BIRTHDAY,\
+                    ROLE_DEFAULT=$ROLE_DEFAULT,\
+                    MONGODB_URI=$MONGODB_URI,\
+                    MONGODB_DATABASE=$MONGODB_DATABASE,\
+                    MONGODB_COLLECTION_BIRTHDATE=$MONGODB_COLLECTION_BIRTHDATE,\
+                    MONGODB_COLLECTION_USER_INTERACTIONS=$MONGODB_COLLECTION_USER_INTERACTIONS"
+
+    deploy-production:
+        name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        environment: prd
+        env:
+            IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/bot-dryscord:latest
+        steps:
+            # Checkout do Git atualizado
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                persist-credentials: false
+
+            # Verificar mudanças no código fonte
+            - name: Check for source code changes
+              uses: dorny/paths-filter@v2
+              id: changes
+              with:
+                  filters: |
+                      src:
+                        - 'src/**'
+                        - 'package.json'
+                        - 'package-lock.json'
+                        - 'Dockerfile'
+
+            # Login to GCP
+            - uses: google-github-actions/setup-gcloud@v0.2.0
+              with:
+                  service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+                  project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+            # gcloud configure docker
+            - name: Configure Docker
+              run: gcloud auth configure-docker --quiet
+
+            - name: Build and Push Docker image
+              if: steps.changes.outputs.src == 'true'
+              run: |
+                  docker build -t $IMAGE_NAME .
+                  docker push $IMAGE_NAME
+
+            - name: Deploy to Cloud Run
+              if: steps.changes.outputs.src == 'true'
+              run: |
+                  gcloud run deploy bot-dryscord \
+                    --image $IMAGE_NAME \
+                    --region us-central1 \
+                    --memory 512Mi \
+                    --min-instances 1 \
+                    --max-instances 2 \
+                    --cpu 1 \
+                    --platform managed \
+                    --set-env-vars "STAGE=$STAGE,\
+                    DISCORD_ACCESS_TOKEN=$DISCORD_ACCESS_TOKEN,\
+                    CLIENT_ID=$CLIENT_ID,\
+                    CHANNEL_LOGS=$CHANNEL_LOGS,\
+                    CHANNEL_WELCOME=$CHANNEL_WELCOME,\
+                    CHANNEL_BIRTHDAY=$CHANNEL_BIRTHDAY,\
+                    ROLE_DEFAULT=$ROLE_DEFAULT,\
+                    MONGODB_URI=$MONGODB_URI,\
+                    MONGODB_DATABASE=$MONGODB_DATABASE,\
+                    MONGODB_COLLECTION_BIRTHDATE=$MONGODB_COLLECTION_BIRTHDATE,\
+                    MONGODB_COLLECTION_USER_INTERACTIONS=$MONGODB_COLLECTION_USER_INTERACTIONS"

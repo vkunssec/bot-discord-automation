@@ -1,5 +1,6 @@
 import { Db, MongoClient } from "mongodb";
-import { MONGODB_DATABASE, MONGODB_URI } from "../../config";
+
+import { MONGODB_DATABASE, MONGODB_URI } from "@/config";
 
 /**
  * Classe MongoDB
@@ -70,6 +71,36 @@ export class MongoDB {
         } catch (error) {
             console.error("Erro ao desconectar do MongoDB:", error);
             throw error;
+        }
+    }
+
+    /**
+     * Método para verificar o status da conexão com o MongoDB
+     *
+     * @returns - Objeto com status da conexão e latência
+     */
+    public async checkConnection(): Promise<{ isConnected: boolean; latency: number }> {
+        try {
+            const startTime = Date.now();
+
+            // Verifica se já está conectado
+            if (!this.database) {
+                await this.connect();
+            }
+
+            // Executa um comando simples para verificar a conexão
+            await this.database?.command({ ping: 1 });
+
+            const latency = Date.now() - startTime;
+            return {
+                isConnected: true,
+                latency,
+            };
+        } catch (error) {
+            return {
+                isConnected: false,
+                latency: 0,
+            };
         }
     }
 }

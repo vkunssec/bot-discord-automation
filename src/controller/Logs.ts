@@ -1,7 +1,16 @@
 import { ChatInputCommandInteraction, Collection, EmbedBuilder, Message, TextChannel } from "discord.js";
-import { CHANNEL_LOGS } from "../config";
+
+import { CHANNEL_LOGS } from "@/config";
+import { LogData } from "@/core/model/commandsProps";
 
 export class Logs {
+    /**
+     * Cria um log de mensagens deletadas
+     *
+     * @param interaction - Interação do usuário
+     * @param filteredMessages - Mensagens filtradas
+     * @param channel - Canal onde a mensagem foi deletada
+     */
     static async DeletedMessages(
         interaction: ChatInputCommandInteraction,
         filteredMessages: Collection<string, Message<boolean>>,
@@ -9,10 +18,10 @@ export class Logs {
     ) {
         try {
             // Verifica se o canal é o de logs, para não criar log de log
-            if (channel.name === CHANNEL_LOGS) return;
+            if (channel.id === CHANNEL_LOGS) return;
 
             const logChannel = interaction.guild?.channels.cache.find(
-                (channel) => channel.name === CHANNEL_LOGS
+                (channel) => channel.id === CHANNEL_LOGS
             ) as TextChannel;
             if (!logChannel) return;
 
@@ -45,21 +54,22 @@ export class Logs {
         }
     }
 
-    static async GenericInfoLog(data: {
-        interaction: ChatInputCommandInteraction | Message;
-        command: string | string[];
-        description?: string;
-        channel: TextChannel;
-    }) {
+    /**
+     * Cria um log de informações genéricas
+     *
+     * @param {LogData} data - Dados do log
+     */
+    static async GenericInfoLog(data: LogData) {
         try {
             // Verifica se o canal é o de logs, para não criar log de log
-            if (data.channel.name === CHANNEL_LOGS) return;
+            if (data.channel.id === CHANNEL_LOGS) return;
 
             const logChannel = data.interaction.guild?.channels.cache.find(
-                (channel) => channel.name === CHANNEL_LOGS
+                (channel) => channel.id === CHANNEL_LOGS
             ) as TextChannel;
             if (!logChannel) return;
 
+            // Cria o embed do log
             const embed = new EmbedBuilder()
                 .setColor("Red")
                 .setTitle("🖥️ Comando executado")
@@ -70,8 +80,8 @@ export class Logs {
                         name: "Usuário",
                         value:
                             data.interaction instanceof Message
-                                ? data.interaction.author.tag
-                                : data.interaction.user.tag,
+                                ? (data.interaction as Message).author.tag
+                                : (data.interaction as ChatInputCommandInteraction).user.tag,
                     },
                     { name: "Canal", value: data.channel.name },
                 ])

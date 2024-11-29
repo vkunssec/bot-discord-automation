@@ -6,25 +6,27 @@ import {
     SlashCommandBuilder,
 } from "discord.js";
 
+type CommandInteraction = ChatInputCommandInteraction | Message;
+
 /**
- * Interface de criação de um comando qualquer para o servidor do Discord
+ * Interface de criação de um comando para o servidor do Discord
  */
 export interface Command {
+    // Propriedades básicas obrigatórias
     // Nome do comando a ser chamado
-    name: string;
+    readonly name: string;
     // Breve descrição da ação do comando, opcional
-    description?: string;
-    // Construtor do comando
-    slashCommandConfig?: SlashCommandBuilder;
+    readonly description: string;
 
+    // Configurações do comando
+    readonly slashCommandConfig?: Omit<SlashCommandBuilder, "addSubcommand" | "addSubcommandGroup">;
     // Alias do comando
-    aliases?: string[];
+    readonly aliases?: readonly string[];
     // Prefixo do comando
-    prefix?: string;
+    readonly prefix?: string;
 
-    // Autocompletar campo
-    autoComplete?(interaction: AutocompleteInteraction<CacheType>): Promise<any>;
-
-    // Controlador da Execução do comando
-    execute(interaction?: ChatInputCommandInteraction | Message, args?: string[]): Promise<any>;
+    // Métodos do comando
+    autoComplete?(interaction: AutocompleteInteraction<CacheType>): Promise<void>;
+    // Execução do comando
+    execute(interaction: CommandInteraction, args?: string[]): Promise<void>;
 }

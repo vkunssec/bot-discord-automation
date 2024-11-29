@@ -1,8 +1,9 @@
 import { Client, Message, MessageReaction, PartialMessageReaction, PartialUser, User, VoiceState } from "discord.js";
-import { getUserInteraction } from "../core/database/user/interaction/get";
-import { updateUserInteraction } from "../core/database/user/interaction/update";
-import { Document } from "../core/interface/document";
-import { UserInteraction } from "../core/interface/user_interaction";
+
+import { getUserInteraction } from "@/core/database/interaction/get";
+import { updateUserInteraction } from "@/core/database/interaction/update";
+import { Document } from "@/core/interface/document";
+import { UserInteraction } from "@/core/interface/user_interaction";
 
 /**
  * Classe para rastrear as interações do usuário
@@ -36,7 +37,11 @@ export class UserInteractionTracker {
     public setup(): void {
         this.client.on("messageCreate", async (message: Message) => {
             if (message.author.bot || !message.guild) return;
-            await this.trackMessage(message.author.id, message.guild.id);
+            if (message.attachments && message.attachments.size > 0) {
+                await this.trackAttachment(message.author.id, message.guild.id);
+            } else {
+                await this.trackMessage(message.author.id, message.guild.id);
+            }
         });
 
         this.client.on(
@@ -79,6 +84,21 @@ export class UserInteractionTracker {
     }
 
     /**
+     * Rastreia a interação de anexos
+     *
+     * @param userId - ID do usuário
+     * @param guildId - ID do servidor
+     */
+    private async trackAttachment(userId: string, guildId: string): Promise<void> {
+        const data: Partial<Document> = {
+            $inc: { attachmentCount: 1.5 },
+            $set: { lastInteraction: new Date() },
+            $setOnInsert: { reactionCount: 0, messageCount: 0, totalTimeInVoice: 0, isInVoice: false },
+        };
+        await updateUserInteraction({ userId, guildId }, data);
+    }
+
+    /**
      * Rastreia a interação de mensagens
      *
      * @param userId - ID do usuário
@@ -88,7 +108,7 @@ export class UserInteractionTracker {
         const data: Partial<Document> = {
             $inc: { messageCount: 1 },
             $set: { lastInteraction: new Date() },
-            $setOnInsert: { reactionCount: 0 },
+            $setOnInsert: { reactionCount: 0, attachmentCount: 0, totalTimeInVoice: 0, isInVoice: false },
         };
         await updateUserInteraction({ userId, guildId }, data);
     }
@@ -103,7 +123,7 @@ export class UserInteractionTracker {
         const data: Partial<Document> = {
             $inc: { reactionCount: 1 },
             $set: { lastInteraction: new Date() },
-            $setOnInsert: { messageCount: 0 },
+            $setOnInsert: { messageCount: 0, attachmentCount: 0, totalTimeInVoice: 0, isInVoice: false },
         };
         await updateUserInteraction({ userId, guildId }, data);
     }
@@ -128,6 +148,7 @@ export class UserInteractionTracker {
             lastInteraction: userActivity.lastInteraction,
             lastVoiceJoin: userActivity.lastVoiceJoin || null,
             isInVoice: userActivity.isInVoice || false,
+            attachmentCount: userActivity.attachmentCount || 0,
         };
     }
 
@@ -144,7 +165,12 @@ export class UserInteractionTracker {
                 isInVoice: true,
                 lastInteraction: new Date(),
             },
-            $setOnInsert: { totalTimeInVoice: 0 },
+            $setOnInsert: {
+                totalTimeInVoice: 0,
+                reactionCount: 0,
+                messageCount: 0,
+                attachmentCount: 0,
+            },
         };
         await updateUserInteraction({ userId, guildId }, data);
     }
@@ -168,6 +194,7 @@ export class UserInteractionTracker {
                     isInVoice: false,
                     lastInteraction: new Date(),
                 },
+                $setOnInsert: { reactionCount: 0, messageCount: 0, attachmentCount: 0 },
             };
             await updateUserInteraction({ userId, guildId }, data);
         }
