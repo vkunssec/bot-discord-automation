@@ -26,6 +26,8 @@
     },
     "homepage": "https://github.com/Dudys37/Bot-Dryscord#readme",
     "devDependencies": {
+        "@commitlint/cli": "^19.6.0",
+        "@commitlint/config-conventional": "^19.6.0",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
         "@types/node": "^22.9.0",
