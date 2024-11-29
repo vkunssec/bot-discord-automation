@@ -47,6 +47,12 @@ jobs:
                         - 'package-lock.json'
                         - 'Dockerfile'
 
+            - name: Skip deployment
+              if: steps.changes.outputs.src != 'true'
+              run: |
+                echo "No changes detected in source code. Skipping deployment."
+                exit 0
+
             # Login to GCP
             - uses: google-github-actions/setup-gcloud@v0.2.0
               with:
@@ -58,13 +64,11 @@ jobs:
               run: gcloud auth configure-docker --quiet
 
             - name: Build and Push Docker image
-              if: steps.changes.outputs.src == 'true'
               run: |
                   docker build -t $IMAGE_NAME .
                   docker push $IMAGE_NAME
 
             - name: Deploy to Cloud Run
-              if: steps.changes.outputs.src == 'true'
               run: |
                   gcloud run deploy bot-dryscord-dev \
                     --image $IMAGE_NAME \
@@ -116,6 +120,12 @@ jobs:
                         - 'package-lock.json'
                         - 'Dockerfile'
 
+            - name: Skip deployment
+              if: steps.changes.outputs.src != 'true'
+              run: |
+                echo "No changes detected in source code. Skipping deployment."
+                exit 0
+
             # Login to GCP
             - uses: google-github-actions/setup-gcloud@v0.2.0
               with:
@@ -127,13 +137,11 @@ jobs:
               run: gcloud auth configure-docker --quiet
 
             - name: Build and Push Docker image
-              if: steps.changes.outputs.src == 'true'
               run: |
                   docker build -t $IMAGE_NAME .
                   docker push $IMAGE_NAME
 
             - name: Deploy to Cloud Run
-              if: steps.changes.outputs.src == 'true'
               run: |
                   gcloud run deploy bot-dryscord \
                     --image $IMAGE_NAME \
