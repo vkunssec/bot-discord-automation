@@ -143,6 +143,10 @@ Demais dependências para desenvolvimento
 -   [typedoc](https://www.npmjs.com/package/typedoc)
 -   [eslint](https://www.npmjs.com/package/eslint)
 -   [eslint-config-prettier](https://www.npmjs.com/package/eslint-config-prettier)
+-   [commitlint](https://www.npmjs.com/package/commitlint)
+-   [cz-conventional-changelog](https://www.npmjs.com/package/cz-conventional-changelog)
+-   [@commitlint/config-conventional](https://www.npmjs.com/package/@commitlint/config-conventional)
+-   [@commitlint/format](https://www.npmjs.com/package/@commitlint/format)
 
 ## Documentação
 
