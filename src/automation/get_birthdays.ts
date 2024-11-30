@@ -13,10 +13,11 @@ import { UserBirthday } from "@/core/interface/user_birthday";
  */
 export class BirthdayAutomation {
     private readonly CRON_EXPRESSION = "0 0 * * *";
+    private readonly channelId: string = CHANNEL_BIRTHDAY;
 
     constructor(
         private readonly client: Client,
-        private readonly channelId: string = CHANNEL_BIRTHDAY
+        private readonly guildId: string = this.client.guilds.cache.get(this.client.guilds.cache.firstKey()!)!.id
     ) {}
 
     /**
@@ -33,7 +34,7 @@ export class BirthdayAutomation {
      */
     private async execute(): Promise<void> {
         try {
-            const birthdays = await getBirthdays();
+            const birthdays = await getBirthdays(this.client.guilds.cache.get(this.guildId)!.id);
             if (!birthdays.length) return;
 
             const channel = await this.getChannel();

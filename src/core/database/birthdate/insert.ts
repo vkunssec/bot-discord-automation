@@ -14,7 +14,9 @@ export async function insertBirthdate(data: UserBirthday): Promise<void> {
         const db = mongodb.getDatabase();
 
         // Insere os dados no banco de dados MongoDB
-        await db.collection(MONGODB_COLLECTION_BIRTHDATE).insertOne(data);
+        await db
+            .collection(MONGODB_COLLECTION_BIRTHDATE)
+            .updateOne({ userId: data.userId }, { $set: data }, { upsert: true });
     } catch (error) {
         console.error("Erro ao registrar aniversário:", error);
         throw error;

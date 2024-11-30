@@ -7,7 +7,7 @@ import { UserBirthday } from "@/core/interface/user_birthday";
  *
  * @returns Lista de aniversariantes
  */
-export async function getBirthdays(): Promise<Array<UserBirthday>> {
+export async function getBirthdays(guildId: string): Promise<Array<UserBirthday>> {
     try {
         const mongodb = MongoDB.getInstance();
         const db = mongodb.getDatabase();
@@ -22,6 +22,7 @@ export async function getBirthdays(): Promise<Array<UserBirthday>> {
             .find({
                 day: currentDay,
                 month: currentMonth,
+                guildId,
             })
             .toArray();
 

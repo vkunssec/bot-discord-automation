@@ -55,6 +55,7 @@ export class RegisterBirthdateCommand implements Command {
 
         const data: UserBirthday = {
             userId: interaction.user.id,
+            guildId: interaction.guildId!,
             day: day!,
             month: month!,
         };

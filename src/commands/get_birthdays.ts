@@ -53,7 +53,7 @@ export class GetBirthdaysCommand implements Command {
         });
 
         // Busca os aniversariantes do mês
-        const birthdays = await getBirthdaysByMonth(month);
+        const birthdays = await getBirthdaysByMonth(month, interaction.guildId!);
 
         if (birthdays.length === 0) {
             await interaction.editReply({

@@ -11,6 +11,9 @@ declare global {
     var botInstance: DryscordApplication;
 }
 
+// Adicionar no início do arquivo, após os imports
+process.env.TZ = "America/Sao_Paulo";
+
 /**
  * Inicialização do Servidor Express
  */

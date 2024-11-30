@@ -8,6 +8,7 @@ import { Document } from "@/core/interface/document";
  */
 export interface UserBirthday extends Document {
     userId: string;
+    guildId: string;
     day: number;
     month: number;
 }
