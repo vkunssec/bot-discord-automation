@@ -14,7 +14,11 @@ export async function getBirthdaysByMonth(month: number, guildId: string): Promi
         const db = mongodb.getDatabase();
 
         // Busca todos os aniversariantes do dia
-        const birthdays = await db.collection(MONGODB_COLLECTION_BIRTHDATE).find({ month, guildId }).sort({ day: 1 }).toArray();
+        const birthdays = await db
+            .collection(MONGODB_COLLECTION_BIRTHDATE)
+            .find({ month, guildId })
+            .sort({ day: 1 })
+            .toArray();
 
         return birthdays.map((birthday) => birthday as UserBirthday);
     } catch (error) {

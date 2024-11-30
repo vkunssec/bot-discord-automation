@@ -13,6 +13,8 @@ declare global {
 
 // Adicionar no início do arquivo, após os imports
 process.env.TZ = "America/Sao_Paulo";
+console.log(new Date().toDateString);
+console.log(new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }));
 
 /**
  * Inicialização do Servidor Express
