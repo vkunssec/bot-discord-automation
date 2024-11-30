@@ -1,7 +1,7 @@
 import { Router } from "express";
+import { StatusCodes } from "http-status-codes";
 
 import { MongoDB } from "@/core/database/mongodb";
-import { StatusCodes } from "http-status-codes";
 
 /**
  * Rotas da aplicação
