@@ -56,6 +56,13 @@ Este é um bot Discord desenvolvido em TypeScript que oferece diversos comandos 
     -   Nível baseado em pontos
 -   **Uso:** `/stats usuario: "Usuário"`
 
+### /get_birthdays
+
+-   **Descrição:** Mostra os aniversariantes do mês
+-   **Opções:**
+    -   `mês`: Mês do aniversário (1-12)
+-   **Uso:** `/get_birthdays mês: 12`
+
 ## 🤖 Automações
 
 ### Sistema de Boas-vindas
