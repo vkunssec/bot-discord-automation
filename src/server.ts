@@ -7,12 +7,15 @@ import { MongoDB } from "@/core/database/mongodb";
 import router from "@/core/routes";
 import { DryscordApplication } from "@/main";
 
+/**
+ * Configuração do timezone para Brasilia
+ * Necessário para que as datas sejam exibidas corretamente
+ */
+process.env.TZ = "America/Sao_Paulo";
+
 declare global {
     var botInstance: DryscordApplication;
 }
-
-// Adicionar no início do arquivo, após os imports
-process.env.TZ = "America/Sao_Paulo";
 
 /**
  * Inicialização do Servidor Express
