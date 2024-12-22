@@ -11,7 +11,7 @@ import { MongoDB } from "@/core/database/mongodb";
 const router = Router();
 
 router.get("/", (req, res) => {
-    res.status(StatusCodes.OK).send("Servidor Dryscord Online");
+    res.status(StatusCodes.OK).send("Servidor Online");
 });
 
 router.get("/ping", (req, res) => {

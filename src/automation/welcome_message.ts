@@ -76,7 +76,7 @@ export class WelcomeMessage {
                 ],
                 timestamp: new Date(),
                 footer: {
-                    text: "🤖 Dryscord Bot",
+                    text: "🤖 Automation Bot",
                 },
             });
 

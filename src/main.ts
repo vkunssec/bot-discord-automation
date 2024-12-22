@@ -16,7 +16,7 @@ import { InteractionHandler } from "@/controller/Interaction";
 import { DeployCommandsProps } from "@/core/model/commandsProps";
 
 /**
- * Classe DryscordApplication
+ * Classe BotApplication
  *
  * Documentação oficial do Discord.js - https://discord.js.org/docs/packages/discord.js/14.15.3
  *
@@ -33,7 +33,7 @@ import { DeployCommandsProps } from "@/core/model/commandsProps";
  * @version 1.0.0
  * @since 2024-11-22
  */
-export class DryscordApplication {
+export class BotApplication {
     /**
      * Cliente do Discord
      */
@@ -132,7 +132,7 @@ export class DryscordApplication {
 
         // Levantar o serviço do bot
         this.client.on(Events.ClientReady, () => {
-            console.log("Dryscord Bot is Ready! 🤖");
+            console.log("Bot is Ready! 🤖");
 
             // https://discord.com/developers/docs/topics/gateway-events#activity-object-activity-types
             this.client.user?.setPresence({

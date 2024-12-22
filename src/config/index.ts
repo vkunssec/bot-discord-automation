@@ -20,9 +20,9 @@ export const ROLE_DEFAULT = process.env.ROLE_DEFAULT ?? "invalid_role_default";
 
 export const CHANNEL_BIRTHDAY = process.env.CHANNEL_BIRTHDAY ?? "invalid_channel_birthday";
 
-export const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/dryscord";
+export const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017/automation";
 
-export const MONGODB_DATABASE = process.env.MONGODB_DATABASE ?? "dryscord";
+export const MONGODB_DATABASE = process.env.MONGODB_DATABASE ?? "automation";
 
 export const MONGODB_COLLECTION_BIRTHDATE = process.env.MONGODB_COLLECTION_BIRTHDATE ?? "users_birthdate";
 

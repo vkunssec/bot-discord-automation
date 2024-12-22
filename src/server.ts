@@ -5,7 +5,7 @@ import helmet from "helmet";
 import { PORT } from "@/config";
 import { MongoDB } from "@/core/database/mongodb";
 import router from "@/core/routes";
-import { DryscordApplication } from "@/main";
+import { BotApplication } from "@/main";
 
 /**
  * Configuração do timezone para Brasilia
@@ -14,7 +14,7 @@ import { DryscordApplication } from "@/main";
 process.env.TZ = "America/Sao_Paulo";
 
 declare global {
-    var botInstance: DryscordApplication;
+    var botInstance: BotApplication;
 }
 
 /**
@@ -48,9 +48,9 @@ app.use(router);
     }
 
     /**
-     * Inicialização do Serviço Dryscord Application
+     * Inicialização do Serviço Bot Application
      */
-    const bot = new DryscordApplication();
+    const bot = new BotApplication();
     global.botInstance = bot;
     await bot.start();
 

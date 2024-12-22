@@ -1,4 +1,4 @@
-# Bot Dryscord
+# Bot
 
 [![Docs](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/docs.yml)
 [![Deploy GCP](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/deploy-gcp.yml/badge.svg)](https://github.com/vkunssec/Bot-Dryscord/actions/workflows/deploy-gcp.yml)

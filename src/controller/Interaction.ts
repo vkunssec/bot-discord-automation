@@ -55,7 +55,7 @@ export class InteractionHandler {
      *
      * ```
      * >>> Successfully executed command [/ping] {
-     * >>>      guild: { id: '1029619927512006676', name: 'Dryscord' },
+     * >>>      guild: { id: '1029619927512006676', name: 'Bot' },
      * >>>      user: { name: 'vkunssec' }
      * >>> }
      * ```
