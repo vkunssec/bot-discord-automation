@@ -77,7 +77,7 @@ DISCORD_ACCESS_TOKEN=<discord_token>
 CLIENT_ID=<application_id>
 
 # Canais
-CHANNEL_LOGS=<channel_logs_name>
+CHANNEL_LOGS=<channel_logs_id>
 CHANNEL_WELCOME=<channel_welcome_id>
 CHANNEL_BIRTHDAY=<channel_birthday_id>
 
